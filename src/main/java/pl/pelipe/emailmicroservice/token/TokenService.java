@@ -13,8 +13,15 @@ public class TokenService {
         this.repository = repository;
     }
 
-    private Boolean isValid(String token) {
+    public int validate(String token) {
         TokenEntity tokenEntity = repository.getByTokenValue(token);
+        if (isValid(tokenEntity)) return 0;
+        if (!isValid(tokenEntity)) return 1;
+        if (isUsageLimitNotExceeded(tokenEntity)) return 2;
+        return 1;
+    }
+
+    private Boolean isValid(TokenEntity tokenEntity) {
         return tokenEntity != null &&
                 tokenEntity.getActive() &&
                 !tokenEntity.getValidUntil().isBefore(LocalDateTime.now());
@@ -33,7 +40,7 @@ public class TokenService {
             return true;
         } else if (!lastUsed.isBefore(LocalDateTime.now().minusDays(1)) || dailyUsageLimit > dailyUsageCounter) {
             tokenEntity.setLastUsed(LocalDateTime.now());
-            tokenEntity.setDailyUsageCounter(dailyUsageCounter+1);
+            tokenEntity.setDailyUsageCounter(dailyUsageCounter + 1);
             repository.save(tokenEntity);
             return true;
         } else return false;
