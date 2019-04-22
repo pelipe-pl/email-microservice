@@ -21,6 +21,22 @@ public class TokenService {
         } else return false;
     }
 
+    public TokenInfoDto getTokenInfo(String token){
+        TokenEntity tokenEntity = repository.getByTokenValue(token);
+        TokenInfoDto tokenInfoDto = new TokenInfoDto();
+        tokenInfoDto.setActive(tokenEntity.getActive());
+        tokenInfoDto.setCreatedAt(tokenEntity.getCreatedAt());
+        tokenInfoDto.setDailyUsageCounter(tokenEntity.getDailyUsageCounter());
+        tokenInfoDto.setLastUsed(tokenEntity.getLastUsed());
+        tokenInfoDto.setValidUntil(tokenEntity.getValidUntil());
+        tokenInfoDto.setDailyUsageLimit(tokenEntity.getDailyUsageLimit());
+        return tokenInfoDto;
+    }
+
+    public boolean existByTokenValue(String token){
+        return repository.existsByTokenValue(token);
+    }
+
     private boolean isValid(TokenEntity tokenEntity) {
 
         return tokenEntity != null &&

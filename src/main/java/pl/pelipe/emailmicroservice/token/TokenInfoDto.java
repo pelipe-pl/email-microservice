@@ -1,22 +1,11 @@
 package pl.pelipe.emailmicroservice.token;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-@Entity
-public class TokenEntity {
+public class TokenInfoDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    private String tokenValue;
-
-    private String owner;
+    private Boolean isActive;
 
     private LocalDateTime createdAt;
 
@@ -28,14 +17,10 @@ public class TokenEntity {
 
     private Long dailyUsageLimit;
 
-    private Boolean isActive;
-
-    public TokenEntity() {
+    public TokenInfoDto() {
     }
 
-    public TokenEntity(String tokenValue, String owner, LocalDateTime createdAt, LocalDateTime validUntil, LocalDateTime lastUsed, Long dailyUsageCounter, Long dailyUsageLimit, Boolean isActive) {
-        this.tokenValue = tokenValue;
-        this.owner = owner;
+    public TokenInfoDto(LocalDateTime createdAt, LocalDateTime validUntil, LocalDateTime lastUsed, Long dailyUsageCounter, Long dailyUsageLimit, Boolean isActive) {
         this.createdAt = createdAt;
         this.validUntil = validUntil;
         this.lastUsed = lastUsed;
@@ -44,20 +29,12 @@ public class TokenEntity {
         this.isActive = isActive;
     }
 
-    public String getTokenValue() {
-        return tokenValue;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 
-    public void setTokenValue(String tokenValue) {
-        this.tokenValue = tokenValue;
-    }
-
-    public String getOwner() {
-        return owner;
-    }
-
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 
     public LocalDateTime getValidUntil() {
@@ -100,27 +77,12 @@ public class TokenEntity {
         isActive = active;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        TokenEntity that = (TokenEntity) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(tokenValue, that.tokenValue) &&
-                Objects.equals(owner, that.owner) &&
-                Objects.equals(createdAt, that.createdAt) &&
+        TokenInfoDto that = (TokenInfoDto) o;
+        return Objects.equals(createdAt, that.createdAt) &&
                 Objects.equals(validUntil, that.validUntil) &&
                 Objects.equals(lastUsed, that.lastUsed) &&
                 Objects.equals(dailyUsageCounter, that.dailyUsageCounter) &&
@@ -130,16 +92,13 @@ public class TokenEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tokenValue, owner, createdAt, validUntil, lastUsed, dailyUsageCounter, dailyUsageLimit, isActive);
+        return Objects.hash(createdAt, validUntil, lastUsed, dailyUsageCounter, dailyUsageLimit, isActive);
     }
 
     @Override
     public String toString() {
-        return "TokenEntity{" +
-                "id=" + id +
-                ", tokenValue='" + tokenValue + '\'' +
-                ", owner='" + owner + '\'' +
-                ", createdAt=" + createdAt +
+        return "TokenInfoDto{" +
+                "createdAt=" + createdAt +
                 ", validUntil=" + validUntil +
                 ", lastUsed=" + lastUsed +
                 ", dailyUsageCounter=" + dailyUsageCounter +
@@ -148,4 +107,3 @@ public class TokenEntity {
                 '}';
     }
 }
-
