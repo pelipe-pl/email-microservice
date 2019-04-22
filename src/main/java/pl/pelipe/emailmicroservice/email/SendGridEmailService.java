@@ -15,9 +15,8 @@ public class SendGridEmailService {
         this.environment = environment;
     }
 
-    public Boolean send(String fromAddress, String senderName, String toAddress, String subject, String content) {
+    void send(String fromAddress, String senderName, String toAddress, String subject, String content) {
 
-        Boolean result = Boolean.FALSE;
         Mail mail = new Mail(new Email(fromAddress, senderName), subject, new Email(toAddress), new Content("text/html", content));
         SendGrid sendGrid = new SendGrid(environment.getProperty("SENDGRID_API_KEY"));
         Request request = new Request();
@@ -29,12 +28,10 @@ public class SendGridEmailService {
             System.out.println(response.getStatusCode());
             System.out.println(response.getBody());
             System.out.println(response.getHeaders());
-            result = true;
         } catch (IOException ex) {
             System.out.println(this.getClass().getSimpleName() + " has failed to send following email.");
             System.out.println("from = [" + fromAddress + " to = [" + toAddress + "], subject = [" + subject);
             ex.printStackTrace();
         }
-        return result;
     }
 }

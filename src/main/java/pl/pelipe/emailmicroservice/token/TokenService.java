@@ -13,36 +13,45 @@ public class TokenService {
         this.repository = repository;
     }
 
-    public int validate(String token) {
+    public boolean validate(String token) {
         TokenEntity tokenEntity = repository.getByTokenValue(token);
-        if (isValid(tokenEntity)) return 0;
-        if (!isValid(tokenEntity)) return 1;
-        if (isUsageLimitNotExceeded(tokenEntity)) return 2;
-        return 1;
+        if (isValid(tokenEntity) && !isUsageLimitExceeded(tokenEntity) ) {
+            updateTokenData(tokenEntity);
+            return true;
+        } else return false;
     }
 
-    private Boolean isValid(TokenEntity tokenEntity) {
+    private boolean isValid(TokenEntity tokenEntity) {
+
         return tokenEntity != null &&
                 tokenEntity.getActive() &&
-                !tokenEntity.getValidUntil().isBefore(LocalDateTime.now());
+                tokenEntity.getValidUntil().isAfter(LocalDateTime.now());
     }
 
-    private Boolean isUsageLimitNotExceeded(TokenEntity tokenEntity) {
+    private boolean isUsageLimitExceeded(TokenEntity tokenEntity) {
 
         Long dailyUsageCounter = tokenEntity.getDailyUsageCounter();
         Long dailyUsageLimit = tokenEntity.getDailyUsageLimit();
         LocalDateTime lastUsed = tokenEntity.getLastUsed();
 
-        if (lastUsed.isBefore(LocalDateTime.now().minusDays(1))) {
-            tokenEntity.setLastUsed(LocalDateTime.now());
-            tokenEntity.setDailyUsageCounter(0L);
-            repository.save(tokenEntity);
-            return true;
-        } else if (!lastUsed.isBefore(LocalDateTime.now().minusDays(1)) || dailyUsageLimit > dailyUsageCounter) {
-            tokenEntity.setLastUsed(LocalDateTime.now());
-            tokenEntity.setDailyUsageCounter(dailyUsageCounter + 1);
-            repository.save(tokenEntity);
-            return true;
-        } else return false;
+        if (lastUsed.isBefore(LocalDateTime.now().minusHours(24))) return false;
+        else if (lastUsed.isAfter(LocalDateTime.now().minusHours(24)) && dailyUsageLimit <= dailyUsageCounter)
+            return false;
+        return false;
+    }
+
+    private void updateTokenData(TokenEntity tokenEntity) {
+
+        Long dailyUsageCounter = tokenEntity.getDailyUsageCounter();
+        LocalDateTime lastUsed = tokenEntity.getLastUsed();
+
+        if (lastUsed.isBefore(LocalDateTime.now().minusHours(24))) {
+            tokenEntity.setDailyUsageCounter(1L);
+        }
+        if (!lastUsed.isBefore(LocalDateTime.now().minusHours(24))) {
+            tokenEntity.setDailyUsageCounter(dailyUsageCounter + 1L);
+        }
+        tokenEntity.setLastUsed(LocalDateTime.now());
+        repository.save(tokenEntity);
     }
 }
