@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-class TokenEntity {
+public class TokenEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

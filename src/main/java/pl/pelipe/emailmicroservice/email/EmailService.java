@@ -14,11 +14,16 @@ public class EmailService {
         this.tokenService = tokenService;
     }
 
-    public int send(String token, String fromAddress, String senderName, String toAddress, String subject, String content) {
+    public int send(String token, EmailBody emailBody) {
 
         int validationResult = tokenService.validate(token);
         if (validationResult == 0) {
-            Boolean result = sendGridEmailService.send(fromAddress, senderName, toAddress, subject, content);
+            Boolean result = sendGridEmailService.send(
+                    emailBody.getFromAddress(),
+                    emailBody.getSenderName(),
+                    emailBody.getToAddress(),
+                    emailBody.getSubject(),
+                    emailBody.getContent());
             if (result) return 0;
             else return 3;
         }

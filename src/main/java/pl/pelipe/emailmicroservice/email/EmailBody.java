@@ -1,11 +1,18 @@
 package pl.pelipe.emailmicroservice.email;
 
+import javax.validation.constraints.NotNull;
+
 public class EmailBody {
 
+    @NotNull
     private String senderName;
+    @NotNull
     private String fromAddress;
+    @NotNull
     private String toAddress;
+    @NotNull
     private String subject;
+    @NotNull
     private String content;
 
     public EmailBody(String senderName, String fromAddress, String toAddress, String subject, String content) {
