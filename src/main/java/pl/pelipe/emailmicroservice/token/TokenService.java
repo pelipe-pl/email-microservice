@@ -36,7 +36,7 @@ public class TokenService {
 
         if (lastUsed.isBefore(LocalDateTime.now().minusHours(24))) return false;
         else if (lastUsed.isAfter(LocalDateTime.now().minusHours(24)) && dailyUsageLimit <= dailyUsageCounter)
-            return false;
+            return true;
         return false;
     }
 

@@ -23,6 +23,6 @@ public class EmailController {
 
         boolean result = emailService.send(token, emailBody);
         if (result) return new ResponseEntity(HttpStatus.OK);
-        else return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        else return new ResponseEntity(HttpStatus.UNAUTHORIZED);
     }
 }
