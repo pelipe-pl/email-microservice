@@ -1,15 +1,19 @@
 package pl.pelipe.emailmicroservice.email;
 
 import com.sendgrid.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 @Service
 public class SendGridEmailService {
 
     private final Environment environment;
+    private Logger logger = LoggerFactory.getLogger(SendGridEmailService.class);
 
     public SendGridEmailService(Environment environment) {
         this.environment = environment;
@@ -25,13 +29,13 @@ public class SendGridEmailService {
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
             Response response = sendGrid.api(request);
-            System.out.println(response.getStatusCode());
-            System.out.println(response.getBody());
-            System.out.println(response.getHeaders());
+            logger.info("SendGrid response code: [" + response.getStatusCode() + "]");
+            logger.info("SendGrid response body: [" + response.getBody() + "]");
+            logger.info("SendGrid response headers: [" + response.getHeaders() + "]");
         } catch (IOException ex) {
-            System.out.println(this.getClass().getSimpleName() + " has failed to send following email.");
-            System.out.println("from = [" + fromAddress + " to = [" + toAddress + "], subject = [" + subject);
-            ex.printStackTrace();
+            logger.error(this.getClass().getSimpleName() + " has failed to send email from = ["
+                    + fromAddress + " to = [" + toAddress + "], subject = [" + subject);
+            logger.error(Arrays.toString(ex.getStackTrace()));
         }
     }
 }
