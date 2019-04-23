@@ -19,10 +19,10 @@ public class EmailController {
 
     @PostMapping("/send/{token}")
     @ResponseBody
-    public ResponseEntity<?> sendEmail(@PathVariable String token, @Valid @RequestBody EmailBody emailBody) {
+    public ResponseEntity<String> sendEmail(@PathVariable String token, @Valid @RequestBody EmailBody emailBody) {
 
         boolean result = emailService.send(token, emailBody);
-        if (result) return new ResponseEntity(HttpStatus.OK);
-        else return new ResponseEntity(HttpStatus.UNAUTHORIZED);
+        if (result) return new ResponseEntity<>("Your e-mail has been successfully processed.", HttpStatus.OK);
+        else return new ResponseEntity<>("Your token is invalid, expired or reached your daily limit.",HttpStatus.UNAUTHORIZED);
     }
 }
