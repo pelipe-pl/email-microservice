@@ -1,5 +1,7 @@
 package pl.pelipe.emailmicroservice.token;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -8,20 +10,27 @@ import java.time.LocalDateTime;
 public class TokenService {
 
     private final TokenRepository repository;
+    private Logger logger = LoggerFactory.getLogger(TokenService.class);
 
     public TokenService(TokenRepository repository) {
         this.repository = repository;
     }
 
     public boolean validate(String token) {
+
         TokenEntity tokenEntity = repository.getByTokenValue(token);
-        if (isValid(tokenEntity) && !isUsageLimitExceeded(tokenEntity) ) {
+        if (isValid(tokenEntity) && !isUsageLimitExceeded(tokenEntity)) {
             updateTokenData(tokenEntity);
+            logger.info("Token used for email send [Token ID: " + tokenEntity.getId() + "]");
             return true;
-        } else return false;
+        } else {
+            logger.warn("Invalid token used for email send: [Token value: " + token + "]");
+            return false;
+        }
     }
 
-    public TokenInfoDto getTokenInfo(String token){
+    public TokenInfoDto getTokenInfo(String token) {
+
         TokenEntity tokenEntity = repository.getByTokenValue(token);
         TokenInfoDto tokenInfoDto = new TokenInfoDto();
         tokenInfoDto.setActive(tokenEntity.getActive());
@@ -33,8 +42,11 @@ public class TokenService {
         return tokenInfoDto;
     }
 
-    public boolean existByTokenValue(String token){
-        return repository.existsByTokenValue(token);
+    public boolean existByTokenValue(String token) {
+
+        boolean result = repository.existsByTokenValue(token);
+        if (!result) logger.warn("Not existing token info checking invoked [Provided token value: " + token + "]");
+        return result;
     }
 
     private boolean isValid(TokenEntity tokenEntity) {
@@ -51,8 +63,11 @@ public class TokenService {
         LocalDateTime lastUsed = tokenEntity.getLastUsed();
 
         if (lastUsed.isBefore(LocalDateTime.now().minusHours(24))) return false;
-        else if (lastUsed.isAfter(LocalDateTime.now().minusHours(24)) && dailyUsageLimit <= dailyUsageCounter)
+        else if (lastUsed.isAfter(LocalDateTime.now().minusHours(24)) && dailyUsageLimit <= dailyUsageCounter) {
+            logger.warn("Daily usage limit of [" + tokenEntity.getDailyUsageLimit()
+                    + "] has been reached for token [ID:" + tokenEntity.getId() + "]");
             return true;
+        }
         return false;
     }
 
