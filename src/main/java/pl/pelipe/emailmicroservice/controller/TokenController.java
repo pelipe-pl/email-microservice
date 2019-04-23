@@ -1,5 +1,7 @@
 package pl.pelipe.emailmicroservice.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,7 +18,9 @@ public class TokenController {
     }
 
     @GetMapping("/info/{token}")
-    public TokenInfoDto getInfo(@PathVariable String token) {
-        return tokenService.getTokenInfo(token);
+    public ResponseEntity<TokenInfoDto> getInfo(@PathVariable String token) {
+        if (tokenService.existByTokenValue(token))
+            return new ResponseEntity<>(tokenService.getTokenInfo(token), HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }
