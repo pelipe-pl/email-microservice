@@ -33,7 +33,7 @@ public class TokenService {
 
         TokenEntity tokenEntity = repository.getByTokenValue(token);
         TokenInfoDto tokenInfoDto = new TokenInfoDto();
-        tokenInfoDto.setActive(tokenEntity.getActive());
+        tokenInfoDto.setIsActive(tokenEntity.getIsActive());
         tokenInfoDto.setCreatedAt(tokenEntity.getCreatedAt());
         tokenInfoDto.setDailyUsageCounter(tokenEntity.getDailyUsageCounter());
         tokenInfoDto.setLastUsed(tokenEntity.getLastUsed());
@@ -52,7 +52,7 @@ public class TokenService {
     private boolean isValid(TokenEntity tokenEntity) {
 
         return tokenEntity != null &&
-                tokenEntity.getActive() &&
+                tokenEntity.getIsActive() &&
                 tokenEntity.getValidUntil().isAfter(LocalDateTime.now());
     }
 
