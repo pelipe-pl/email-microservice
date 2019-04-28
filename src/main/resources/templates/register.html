@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<div class="card card-login card-plain">
+    <form th:action="@{/register}" method="post" class="form">
+        <div class="content">
+            <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons users_circle-08"></i>
+                                </span>
+                <input type="text" id="firstName" name="firstName" placeholder="First name"
+                       autofocus="autofocus" class="form-control" required/>
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons users_circle-08"></i>
+                                </span>
+                <input type="text" id="lastName" name="lastName" placeholder="Last name"
+                       class="form-control" required/>
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons ui-1_email-85"></i>
+                                </span>
+                <input type="email" id="username" name="username" placeholder="Email address"
+                       class="form-control" required/>
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons text_caps-small"></i>
+                                </span>
+                <input type="password" id="password" name="password" placeholder="Password"
+                       class="form-control" required/>
+            </div>
+            <div class="input-group form-group-no-border input-lg">
+                                <span class="input-group-addon">
+                                    <i class="now-ui-icons text_caps-small"></i>
+                                </span>
+                <input type="password" id="passwordConfirm" name="passwordConfirm"
+                       placeholder="Confirm your password"
+                       class="form-control" required/>
+            </div>
+        </div>
+        <div class="footer text-center">
+            <button type="submit" class="btn btn-primary btn-round btn-lg btn-block">Register</button>
+        </div>
+        <div class="footer text-center text-light">
+            Have an account already? <strong><a href="/login">LOGIN</a></strong>
+        </div>
+    </form>
+</div>
+</body>
+</html>

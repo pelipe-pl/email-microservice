@@ -17,7 +17,7 @@ public class EmailController {
         this.emailService = emailService;
     }
 
-    @PostMapping("/send/{token}")
+    @PostMapping("/rest/send/{token}")
     @ResponseBody
     public ResponseEntity<String> sendEmail(@PathVariable String token, @Valid @RequestBody EmailBody emailBody) {
 
