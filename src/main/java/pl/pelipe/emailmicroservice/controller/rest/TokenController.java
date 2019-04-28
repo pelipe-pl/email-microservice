@@ -1,4 +1,4 @@
-package pl.pelipe.emailmicroservice.controller;
+package pl.pelipe.emailmicroservice.controller.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
