@@ -20,7 +20,7 @@ public class Role {
 
     private String name;
 
-    @ManyToMany(mappedBy = "roles")
+    @ManyToMany(mappedBy = "roles", cascade = CascadeType.ALL)
     private Set<UserEntity> users;
 
     @Override

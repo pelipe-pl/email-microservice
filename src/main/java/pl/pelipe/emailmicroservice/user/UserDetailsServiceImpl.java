@@ -31,7 +31,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         UserEntity userEntity = userRepository.getByUsername(username);
         if (userEntity == null) {
-            logger.error("User not found for username: [" + username + "]");
+            logger.warn("User not found for username: [" + username + "]");
             throw new UsernameNotFoundException("User not found");
         }
 
@@ -39,14 +39,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (Role role : userEntity.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-
+        logger.info("User logged in: ["+userEntity.getUsername()+"]");
         return new User(
                 userEntity.getUsername(),
                 userEntity.getPassword(),
-                userEntity.getIsActive(),
-                userEntity.getIsActive(),
-                userEntity.getIsActive(),
-                userEntity.getIsActive(),
-                grantedAuthorities);
+                 grantedAuthorities);
     }
 }

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,6 +45,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
 
                 .and()
+                .formLogin()
+                .defaultSuccessUrl("/")
+
+                .and()
                 .logout()
                 .deleteCookies("JSESSIONID")
 
@@ -55,5 +60,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder());
+    }
+
+    @Override
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/*.png", "/*.jpg", "/css/**", "/js/**",
+                "/sass/**", "/img/**", "/*.ttf", "/*.scss", "/resources/**", "/fonts/**",
+                "/favico/**", "*.json", "*.ico");
     }
 }
