@@ -12,25 +12,23 @@ import java.time.LocalDateTime;
 public class TokenService {
 
     private final TokenRepository repository;
-    private final EmailService emailService;
     private Logger logger = LoggerFactory.getLogger(TokenService.class);
 
-    public TokenService(TokenRepository repository, EmailService emailService) {
+    public TokenService(TokenRepository repository) {
         this.repository = repository;
-        this.emailService = emailService;
     }
 
     public TokenInfoDto create(String tokenOwnerEmail) {
 
         TokenEntity tokenEntity = new TokenEntity();
-        tokenEntity.setTokenValue(RandomStringUtils.random(20));
+        tokenEntity.setTokenValue(RandomStringUtils.randomAlphabetic(20));
         tokenEntity.setDailyUsageCounter(0L);
         tokenEntity.setCreatedAt(LocalDateTime.now());
         tokenEntity.setLastUsed(LocalDateTime.now());
         tokenEntity.setDailyUsageLimit(100L);
         tokenEntity.setValidUntil(LocalDateTime.now().plusDays(90));
         tokenEntity.setIsActive(true);
-        tokenEntity.setOwner(tokenOwnerEmail);
+        tokenEntity.setOwnerEmail(tokenOwnerEmail);
         repository.save(tokenEntity);
         logger.info("New token created for: [" + tokenOwnerEmail + "]");
         //TODO send new token to owner email
@@ -102,6 +100,8 @@ public class TokenService {
 
     private TokenInfoDto toDto(TokenEntity tokenEntity) {
         TokenInfoDto tokenInfoDto = new TokenInfoDto();
+        tokenInfoDto.setOwnerEmail(tokenEntity.getOwnerEmail());
+        tokenInfoDto.setValue(tokenEntity.getTokenValue());
         tokenInfoDto.setIsActive(tokenEntity.getIsActive());
         tokenInfoDto.setCreatedAt(tokenEntity.getCreatedAt());
         tokenInfoDto.setDailyUsageCounter(tokenEntity.getDailyUsageCounter());

@@ -12,6 +12,10 @@ import java.time.LocalDateTime;
 @ToString
 public class TokenInfoDto {
 
+    private String ownerEmail;
+
+    private String value;
+
     private Boolean isActive;
 
     private LocalDateTime createdAt;

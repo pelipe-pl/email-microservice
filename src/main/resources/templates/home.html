@@ -11,6 +11,7 @@
 <div sec:authorize="isAuthenticated()">
     <div>Welcome, <strong><span sec:authentication="name"></span>!</strong></div>
     <div>You are logged in! <a href="/logout">Log out here</a></div>
+    <div><a href="/token">Create a new token</a></div>
 </div>
 <div sec:authorize="isAnonymous()">You are NOT logged in! <a href="/login"> Log in here</a></div>
 </body>
