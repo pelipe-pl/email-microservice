@@ -1,8 +1,10 @@
 package pl.pelipe.emailmicroservice.token;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pl.pelipe.emailmicroservice.email.EmailService;
 
 import java.time.LocalDateTime;
 
@@ -10,10 +12,29 @@ import java.time.LocalDateTime;
 public class TokenService {
 
     private final TokenRepository repository;
+    private final EmailService emailService;
     private Logger logger = LoggerFactory.getLogger(TokenService.class);
 
-    public TokenService(TokenRepository repository) {
+    public TokenService(TokenRepository repository, EmailService emailService) {
         this.repository = repository;
+        this.emailService = emailService;
+    }
+
+    public TokenInfoDto create(String tokenOwnerEmail) {
+
+        TokenEntity tokenEntity = new TokenEntity();
+        tokenEntity.setTokenValue(RandomStringUtils.random(20));
+        tokenEntity.setDailyUsageCounter(0L);
+        tokenEntity.setCreatedAt(LocalDateTime.now());
+        tokenEntity.setLastUsed(LocalDateTime.now());
+        tokenEntity.setDailyUsageLimit(100L);
+        tokenEntity.setValidUntil(LocalDateTime.now().plusDays(90));
+        tokenEntity.setIsActive(true);
+        tokenEntity.setOwner(tokenOwnerEmail);
+        repository.save(tokenEntity);
+        logger.info("New token created for: [" + tokenOwnerEmail + "]");
+        //TODO send new token to owner email
+        return toDto(tokenEntity);
     }
 
     public boolean validate(String token) {
@@ -32,14 +53,7 @@ public class TokenService {
     public TokenInfoDto getTokenInfo(String token) {
 
         TokenEntity tokenEntity = repository.getByTokenValue(token);
-        TokenInfoDto tokenInfoDto = new TokenInfoDto();
-        tokenInfoDto.setIsActive(tokenEntity.getIsActive());
-        tokenInfoDto.setCreatedAt(tokenEntity.getCreatedAt());
-        tokenInfoDto.setDailyUsageCounter(tokenEntity.getDailyUsageCounter());
-        tokenInfoDto.setLastUsed(tokenEntity.getLastUsed());
-        tokenInfoDto.setValidUntil(tokenEntity.getValidUntil());
-        tokenInfoDto.setDailyUsageLimit(tokenEntity.getDailyUsageLimit());
-        return tokenInfoDto;
+        return toDto(tokenEntity);
     }
 
     public boolean existByTokenValue(String token) {
@@ -84,5 +98,16 @@ public class TokenService {
         }
         tokenEntity.setLastUsed(LocalDateTime.now());
         repository.save(tokenEntity);
+    }
+
+    private TokenInfoDto toDto(TokenEntity tokenEntity) {
+        TokenInfoDto tokenInfoDto = new TokenInfoDto();
+        tokenInfoDto.setIsActive(tokenEntity.getIsActive());
+        tokenInfoDto.setCreatedAt(tokenEntity.getCreatedAt());
+        tokenInfoDto.setDailyUsageCounter(tokenEntity.getDailyUsageCounter());
+        tokenInfoDto.setLastUsed(tokenEntity.getLastUsed());
+        tokenInfoDto.setValidUntil(tokenEntity.getValidUntil());
+        tokenInfoDto.setDailyUsageLimit(tokenEntity.getDailyUsageLimit());
+        return tokenInfoDto;
     }
 }
