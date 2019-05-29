@@ -24,7 +24,7 @@ public class TokenService {
         tokenEntity.setTokenValue(RandomStringUtils.randomAlphabetic(20));
         tokenEntity.setDailyUsageCounter(0L);
         tokenEntity.setCreatedAt(LocalDateTime.now());
-        tokenEntity.setLastUsed(LocalDateTime.now());
+        tokenEntity.setLastUsed(null);
         tokenEntity.setDailyUsageLimit(100L);
         tokenEntity.setValidUntil(LocalDateTime.now().plusDays(90));
         tokenEntity.setIsActive(true);
@@ -74,7 +74,7 @@ public class TokenService {
         Long dailyUsageLimit = tokenEntity.getDailyUsageLimit();
         LocalDateTime lastUsed = tokenEntity.getLastUsed();
 
-        if (lastUsed.isBefore(LocalDateTime.now().minusHours(24))) return false;
+        if (lastUsed == null || lastUsed.isBefore(LocalDateTime.now().minusHours(24))) return false;
         else if (lastUsed.isAfter(LocalDateTime.now().minusHours(24)) && dailyUsageLimit <= dailyUsageCounter) {
             logger.warn("Daily usage limit of [" + tokenEntity.getDailyUsageLimit()
                     + "] has been reached for token [ID:" + tokenEntity.getId() + "]");
