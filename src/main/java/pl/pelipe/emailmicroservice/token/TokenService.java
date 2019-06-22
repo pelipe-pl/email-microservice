@@ -1,8 +1,10 @@
 package pl.pelipe.emailmicroservice.token;
 
+import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import pl.pelipe.emailmicroservice.email.EmailService;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +16,23 @@ public class TokenService {
 
     public TokenService(TokenRepository repository) {
         this.repository = repository;
+    }
+
+    public TokenInfoDto create(String tokenOwnerEmail) {
+
+        TokenEntity tokenEntity = new TokenEntity();
+        tokenEntity.setTokenValue(RandomStringUtils.randomAlphabetic(20));
+        tokenEntity.setDailyUsageCounter(0L);
+        tokenEntity.setCreatedAt(LocalDateTime.now());
+        tokenEntity.setLastUsed(null);
+        tokenEntity.setDailyUsageLimit(100L);
+        tokenEntity.setValidUntil(LocalDateTime.now().plusDays(90));
+        tokenEntity.setIsActive(true);
+        tokenEntity.setOwnerEmail(tokenOwnerEmail);
+        repository.save(tokenEntity);
+        logger.info("New token created for: [" + tokenOwnerEmail + "]");
+        //TODO send new token to owner email
+        return toDto(tokenEntity);
     }
 
     public boolean validate(String token) {
@@ -32,14 +51,7 @@ public class TokenService {
     public TokenInfoDto getTokenInfo(String token) {
 
         TokenEntity tokenEntity = repository.getByTokenValue(token);
-        TokenInfoDto tokenInfoDto = new TokenInfoDto();
-        tokenInfoDto.setIsActive(tokenEntity.getIsActive());
-        tokenInfoDto.setCreatedAt(tokenEntity.getCreatedAt());
-        tokenInfoDto.setDailyUsageCounter(tokenEntity.getDailyUsageCounter());
-        tokenInfoDto.setLastUsed(tokenEntity.getLastUsed());
-        tokenInfoDto.setValidUntil(tokenEntity.getValidUntil());
-        tokenInfoDto.setDailyUsageLimit(tokenEntity.getDailyUsageLimit());
-        return tokenInfoDto;
+        return toDto(tokenEntity);
     }
 
     public boolean existByTokenValue(String token) {
@@ -62,7 +74,7 @@ public class TokenService {
         Long dailyUsageLimit = tokenEntity.getDailyUsageLimit();
         LocalDateTime lastUsed = tokenEntity.getLastUsed();
 
-        if (lastUsed.isBefore(LocalDateTime.now().minusHours(24))) return false;
+        if (lastUsed == null || lastUsed.isBefore(LocalDateTime.now().minusHours(24))) return false;
         else if (lastUsed.isAfter(LocalDateTime.now().minusHours(24)) && dailyUsageLimit <= dailyUsageCounter) {
             logger.warn("Daily usage limit of [" + tokenEntity.getDailyUsageLimit()
                     + "] has been reached for token [ID:" + tokenEntity.getId() + "]");
@@ -84,5 +96,18 @@ public class TokenService {
         }
         tokenEntity.setLastUsed(LocalDateTime.now());
         repository.save(tokenEntity);
+    }
+
+    private TokenInfoDto toDto(TokenEntity tokenEntity) {
+        TokenInfoDto tokenInfoDto = new TokenInfoDto();
+        tokenInfoDto.setOwnerEmail(tokenEntity.getOwnerEmail());
+        tokenInfoDto.setValue(tokenEntity.getTokenValue());
+        tokenInfoDto.setIsActive(tokenEntity.getIsActive());
+        tokenInfoDto.setCreatedAt(tokenEntity.getCreatedAt());
+        tokenInfoDto.setDailyUsageCounter(tokenEntity.getDailyUsageCounter());
+        tokenInfoDto.setLastUsed(tokenEntity.getLastUsed());
+        tokenInfoDto.setValidUntil(tokenEntity.getValidUntil());
+        tokenInfoDto.setDailyUsageLimit(tokenEntity.getDailyUsageLimit());
+        return tokenInfoDto;
     }
 }

@@ -26,4 +26,13 @@ public class EmailService {
             return true;
         } else return false;
     }
+
+    public void send(EmailBody emailBody) {
+        sendGridEmailService.send(
+                emailBody.getFromAddress(),
+                emailBody.getSenderName(),
+                emailBody.getToAddress(),
+                emailBody.getSubject(),
+                emailBody.getContent());
+    }
 }

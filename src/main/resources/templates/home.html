@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Email Microservice Dashboard</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<h1 style="alignment: center">Welcome to Email Microservice Dashboard !</h1>
+<div sec:authorize="isAuthenticated()">
+    <div>Welcome, <strong><span sec:authentication="name"></span>!</strong></div>
+    <div>You are logged in! <a href="/logout">Log out here</a></div>
+    <div><a href="/token">Create a new token</a></div>
+</div>
+<div sec:authorize="isAnonymous()">You are NOT logged in! <a href="/login"> Log in here</a></div>
+</body>
+</html>

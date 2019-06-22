@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/token}" method="post" class="form">
+    <div>
+        <span><label for="ownerEmail">Token owner e-mail</label>
+            <input type="email" id="ownerEmail" name="ownerEmail" placeholder="Type email address"
+                   autofocus="autofocus" required/>
+        </span>
+    </div>
+    <div th:if="${errors!=null}">Email error</div>
+    <div>
+        <span><button type="submit">Create a token</button></span>
+    </div>
+</form>
+</body>
+</html>
