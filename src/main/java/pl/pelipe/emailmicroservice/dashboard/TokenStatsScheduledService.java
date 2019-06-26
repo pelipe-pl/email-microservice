@@ -1,0 +1,41 @@
+package pl.pelipe.emailmicroservice.dashboard;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
+import pl.pelipe.emailmicroservice.token.TokenRepository;
+
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+
+@Service
+public class TokenStatsScheduledService {
+
+    private TokenRepository tokenRepository;
+    private Map<String, Long> tokenStats = new HashMap<>();
+
+    private Logger logger = LoggerFactory.getLogger(TokenStatsScheduledService.class);
+
+    public TokenStatsScheduledService(TokenRepository tokenRepository) {
+        this.tokenRepository = tokenRepository;
+    }
+
+    @Scheduled(fixedRate = 60000)
+    private void statsMonitor() {
+        Long totalToken = tokenRepository.count();
+        Long activeTokens = tokenRepository.countAllByIsActiveOrValidUntilAfter(true, LocalDateTime.now());
+        Long newTokensLast7days = tokenRepository.countAllByCreatedAtAfter(LocalDateTime.now().minusDays(7L));
+
+        tokenStats.put("totalToken", totalToken);
+        tokenStats.put("activeTokens", activeTokens);
+        tokenStats.put("newTokensLast7days", newTokensLast7days);
+
+        logger.info("Token stats successfully updated by scheduler (" + this.getClass().getCanonicalName() + ")");
+    }
+
+    public Map<String, Long> getTokenStats() {
+        return tokenStats;
+    }
+}

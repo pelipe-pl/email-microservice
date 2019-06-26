@@ -36,12 +36,6 @@ public class UserStatsScheduledService {
     }
 
     public Map<String, Long> getUserStatsMap() {
-        if (userStats.isEmpty()) {
-            Map<String, Long> userStatsEmpty = new HashMap<>();
-            userStatsEmpty.put("usersTotal", 0L);
-            userStatsEmpty.put("usersActive", 0L);
-            userStatsEmpty.put("usersRegisteredLast7days", 0L);
-            return userStatsEmpty;
-        } else return userStats;
+        return userStats;
     }
 }
