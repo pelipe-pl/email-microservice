@@ -17,6 +17,9 @@
 <div>
     <div>Total users: <strong th:text="${userStatsMap.get('usersTotal')}"></strong></div>
 </div>
+<div>
+    <div>Total tokens: <strong th:text="${tokenStatsMap.get('totalTokens')}"></strong></div>
+</div>
 <div sec:authorize="isAnonymous()">You are NOT logged in! <a href="/login"> Log in here</a></div>
 </body>
 </html>

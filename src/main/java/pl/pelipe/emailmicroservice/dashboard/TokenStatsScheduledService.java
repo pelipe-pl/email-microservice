@@ -24,11 +24,11 @@ public class TokenStatsScheduledService {
 
     @Scheduled(fixedRate = 60000)
     private void statsMonitor() {
-        Long totalToken = tokenRepository.count();
+        Long totalTokens = tokenRepository.count();
         Long activeTokens = tokenRepository.countAllByIsActiveOrValidUntilAfter(true, LocalDateTime.now());
         Long newTokensLast7days = tokenRepository.countAllByCreatedAtAfter(LocalDateTime.now().minusDays(7L));
 
-        tokenStats.put("totalToken", totalToken);
+        tokenStats.put("totalTokens", totalTokens);
         tokenStats.put("activeTokens", activeTokens);
         tokenStats.put("newTokensLast7days", newTokensLast7days);
 
