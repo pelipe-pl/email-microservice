@@ -52,6 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .logout()
                 .deleteCookies("JSESSIONID")
 
+                //TODO take the rememberMe key out of the code
+
+                .and()
+                .rememberMe().key("KJhIUG7KGkjh8Fjguf")
+
                 .and()
                 .csrf()
                 .disable();
