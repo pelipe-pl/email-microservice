@@ -43,7 +43,8 @@ public class UserController {
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
-    public String registration(Model model) {
+    public String registration(Model model, Principal principal) {
+        if (principal != null) return "redirect:/";
         model.addAttribute("userForm", new UserEntity());
         return "register";
     }
@@ -56,7 +57,7 @@ public class UserController {
             return "register";
         }
         userService.save(userForm);
-        model.addAttribute("message", "You have been successfully registered.");
+        model.addAttribute("message", "You have been successfully registered. Your account is awaiting for activation.");
         return "login";
     }
 }
