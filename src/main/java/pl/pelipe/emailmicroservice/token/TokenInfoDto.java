@@ -1,15 +1,10 @@
 package pl.pelipe.emailmicroservice.token;
 
-import lombok.*;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
-@ToString
+@Data
 public class TokenInfoDto {
 
     private String ownerEmail;
