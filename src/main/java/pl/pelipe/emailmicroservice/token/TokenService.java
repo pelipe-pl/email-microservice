@@ -1,21 +1,26 @@
 package pl.pelipe.emailmicroservice.token;
 
+import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import pl.pelipe.emailmicroservice.email.EmailBody;
+import pl.pelipe.emailmicroservice.email.EmailService;
 
 import java.time.LocalDateTime;
 
+import static pl.pelipe.emailmicroservice.config.Keys.EMAIL_SUBJECT_NEW_TOKEN_NOTIFY;
+
 @Service
+@AllArgsConstructor
 public class TokenService {
 
     private final TokenRepository repository;
+    private final EmailService emailService;
+    private final Environment environment;
     private Logger logger = LoggerFactory.getLogger(TokenService.class);
-
-    public TokenService(TokenRepository repository) {
-        this.repository = repository;
-    }
 
     public TokenInfoDto create(String tokenOwnerEmail) {
 
@@ -30,7 +35,7 @@ public class TokenService {
         tokenEntity.setOwnerEmail(tokenOwnerEmail);
         repository.save(tokenEntity);
         logger.info("New token created for: [" + tokenOwnerEmail + "]");
-        //TODO send new token to owner email
+        notifyTokenOwner(tokenEntity);
         return toDto(tokenEntity);
     }
 
@@ -95,6 +100,16 @@ public class TokenService {
         }
         tokenEntity.setLastUsed(LocalDateTime.now());
         repository.save(tokenEntity);
+    }
+
+    private void notifyTokenOwner(TokenEntity tokenEntity) {
+        EmailBody emailBody = new EmailBody();
+        emailBody.setSenderName(environment.getProperty("EMAIL_DEFAULT_SENDER_NAME"));
+        emailBody.setFromAddress(environment.getProperty("EMAIL_DEFAULT_SENDER_ADDRESS"));
+        emailBody.setToAddress(tokenEntity.getOwnerEmail());
+        emailBody.setSubject(EMAIL_SUBJECT_NEW_TOKEN_NOTIFY);
+        emailBody.setContent("Tours new token is: " + tokenEntity.getTokenValue());
+        emailService.send(emailBody);
     }
 
     private TokenInfoDto toDto(TokenEntity tokenEntity) {
