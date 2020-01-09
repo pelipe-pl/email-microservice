@@ -1,22 +1,23 @@
 package pl.pelipe.emailmicroservice.email;
 
 import org.springframework.stereotype.Service;
-import pl.pelipe.emailmicroservice.token.TokenService;
+import pl.pelipe.emailmicroservice.token.TokenValidator;
 
 @Service
 public class EmailService {
 
     private final SendGridEmailService sendGridEmailService;
-    private final TokenService tokenService;
+    private final TokenValidator tokenValidator;
 
-    public EmailService(SendGridEmailService sendGridEmailService, TokenService tokenService) {
+    public EmailService(SendGridEmailService sendGridEmailService, TokenValidator tokenValidator) {
         this.sendGridEmailService = sendGridEmailService;
-        this.tokenService = tokenService;
+        this.tokenValidator = tokenValidator;
+
     }
 
     public boolean send(String token, EmailBody emailBody) {
 
-        if (tokenService.validate(token)) {
+        if (tokenValidator.validate(token)) {
             sendGridEmailService.send(
                     emailBody.getFromAddress(),
                     emailBody.getSenderName(),
