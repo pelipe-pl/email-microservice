@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
+import static pl.pelipe.emailmicroservice.config.Keys.*;
+
 @Service
 public class TokenValidator {
 
@@ -22,10 +24,10 @@ public class TokenValidator {
 
         if (isValid(tokenEntity) && !isUsageLimitExceeded(tokenEntity)) {
             updateTokenData(tokenEntity);
-            logger.info("Token used for email send [Token ID: " + tokenEntity.getId() + "]");
+            logger.info(String.format(LOG_TOKEN_USAGE_INFO, tokenEntity.getId()));
             return true;
         } else {
-            logger.warn("Invalid token used for email send: [Token value: " + token + "]");
+            logger.warn(String.format(LOG_TOKEN_INVALID, token));
             return false;
         }
     }
@@ -45,8 +47,7 @@ public class TokenValidator {
 
         if (lastUsed == null || lastUsed.isBefore(LocalDateTime.now().minusHours(24))) return false;
         else if (lastUsed.isAfter(LocalDateTime.now().minusHours(24)) && dailyUsageLimit <= dailyUsageCounter) {
-            logger.warn("Daily usage limit of [" + tokenEntity.getDailyUsageLimit()
-                    + "] has been reached for token [ID:" + tokenEntity.getId() + "]");
+            logger.warn(String.format(LOG_TOKEN_USAGE_LIMIT_REACHED, tokenEntity.getDailyUsageLimit(), tokenEntity.getId()));
             return true;
         }
         return false;
