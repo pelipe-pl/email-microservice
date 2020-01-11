@@ -5,6 +5,9 @@ public class Keys {
     public static final String LOG_TOKEN_NOT_EXISTING = "Not existing token info checking invoked. Provided token value: %s";
     public static final String LOG_TOKEN_CREATED = "New token created for: %s ";
 
+    public static final String LOG_SCHEDULER_USER_STATS_UPDATE = "User stats successfully updated by scheduler";
+    public static final String LOG_SCHEDULER_TOKEN_STATS_UPDATE = "Token stats successfully updated by scheduler";
+
     public static final String LOG_SENDGRID_EMAIL_SENDING_INFO = "Trying to send email with SendGrid to: %s";
     public static final String LOG_SENDGRID_RESPONSE_CODE = "SendGrid response code: %s";
     public static final String LOG_SENDGRID_RESPONSE_BODY = "SendGrid response body: %s";

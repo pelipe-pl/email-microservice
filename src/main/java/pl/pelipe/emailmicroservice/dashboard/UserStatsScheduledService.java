@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static pl.pelipe.emailmicroservice.config.Keys.LOG_SCHEDULER_USER_STATS_UPDATE;
+
 @Service
 public class UserStatsScheduledService {
 
@@ -32,7 +34,7 @@ public class UserStatsScheduledService {
         userStats.put("usersActive", usersActive);
         userStats.put("usersRegisteredLast7days", usersRegisteredLast7days);
 
-        logger.info("User stats successfully updated by scheduler (" + this.getClass().getCanonicalName() + ")");
+        logger.info(LOG_SCHEDULER_USER_STATS_UPDATE);
     }
 
     public Map<String, Long> getUserStatsMap() {

@@ -10,6 +10,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import static pl.pelipe.emailmicroservice.config.Keys.LOG_SCHEDULER_TOKEN_STATS_UPDATE;
+
 @Service
 public class TokenStatsScheduledService {
 
@@ -32,7 +34,7 @@ public class TokenStatsScheduledService {
         tokenStats.put("activeTokens", activeTokens);
         tokenStats.put("newTokensLast7days", newTokensLast7days);
 
-        logger.info("Token stats successfully updated by scheduler (" + this.getClass().getCanonicalName() + ")");
+        logger.info(LOG_SCHEDULER_TOKEN_STATS_UPDATE);
     }
 
     public Map<String, Long> getTokenStats() {
