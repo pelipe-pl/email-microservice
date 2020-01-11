@@ -10,7 +10,7 @@ import pl.pelipe.emailmicroservice.email.EmailService;
 
 import java.time.LocalDateTime;
 
-import static pl.pelipe.emailmicroservice.config.Keys.EMAIL_SUBJECT_NEW_TOKEN_NOTIFY;
+import static pl.pelipe.emailmicroservice.config.Keys.*;
 
 @Service
 public class TokenService {
@@ -38,7 +38,7 @@ public class TokenService {
         tokenEntity.setIsActive(true);
         tokenEntity.setOwnerEmail(tokenOwnerEmail);
         repository.save(tokenEntity);
-        logger.info("New token created for: [" + tokenOwnerEmail + "]");
+        logger.info(String.format(TOKEN_INFO_CREATED, tokenOwnerEmail));
         notifyTokenOwner(tokenEntity);
         return toDto(tokenEntity);
     }
@@ -52,7 +52,7 @@ public class TokenService {
     public boolean existByTokenValue(String token) {
 
         boolean result = repository.existsByTokenValue(token);
-        if (!result) logger.warn("Not existing token info checking invoked [Provided token value: " + token + "]");
+        if (!result) logger.warn(String.format(TOKEN_INFO_NOT_EXISTING, token));
         return result;
     }
 
@@ -62,7 +62,7 @@ public class TokenService {
         emailBody.setFromAddress(environment.getProperty("EMAIL_DEFAULT_SENDER_ADDRESS"));
         emailBody.setToAddress(tokenEntity.getOwnerEmail());
         emailBody.setSubject(EMAIL_SUBJECT_NEW_TOKEN_NOTIFY);
-        emailBody.setContent("Your new token is: " + tokenEntity.getTokenValue());
+        emailBody.setContent(String.format(EMAIL_CONTENT_NEW_TOKEN_NOTIFY, tokenEntity.getTokenValue()));
         emailService.send(emailBody);
     }
 
