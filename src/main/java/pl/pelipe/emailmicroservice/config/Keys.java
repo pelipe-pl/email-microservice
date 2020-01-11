@@ -8,11 +8,11 @@ public class Keys {
     public static final String LOG_SCHEDULER_USER_STATS_UPDATE = "User stats successfully updated by scheduler";
     public static final String LOG_SCHEDULER_TOKEN_STATS_UPDATE = "Token stats successfully updated by scheduler";
 
-    public static final String LOG_SENDGRID_EMAIL_SENDING_INFO = "Trying to send email with SendGrid to: %s";
+    public static final String LOG_SENDGRID_EMAIL_SENDING_INFO = "Trying to send email to: %s";
     public static final String LOG_SENDGRID_RESPONSE_CODE = "SendGrid response code: %s";
     public static final String LOG_SENDGRID_RESPONSE_BODY = "SendGrid response body: %s";
     public static final String LOG_SENDGRID_RESPONSE_HEADERS = "SendGrid response headers: %s";
-    public static final String LOG_SENDGRID_FAIL = "Failed to send email with SendGrid. From: %s, To: %s, Subject: %s";
+    public static final String LOG_SENDGRID_FAIL = "Failed to send email from: %s, to: %s, subject: %s";
 
     public static final String EMAIL_SUBJECT_NEW_TOKEN_NOTIFY = "New token has been generated for you";
     public static final String EMAIL_CONTENT_NEW_TOKEN_NOTIFY = "Your new token is: %s";

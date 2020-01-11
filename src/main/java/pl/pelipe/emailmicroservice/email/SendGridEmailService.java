@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import static pl.pelipe.emailmicroservice.config.Keys.*;
+import static pl.pelipe.emailmicroservice.email.EmailUtils.anonymize;
 
 @Service
 public class SendGridEmailService {
@@ -30,7 +31,7 @@ public class SendGridEmailService {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
-            logger.info(String.format(LOG_SENDGRID_EMAIL_SENDING_INFO, toAddress));
+            logger.info(String.format(LOG_SENDGRID_EMAIL_SENDING_INFO, anonymize(toAddress)));
             Response response = sendGrid.api(request);
             logger.info(String.format(LOG_SENDGRID_RESPONSE_CODE, response.getStatusCode()));
             if (!response.getBody().isEmpty()) {
@@ -38,7 +39,7 @@ public class SendGridEmailService {
             }
             logger.debug(String.format(LOG_SENDGRID_RESPONSE_HEADERS, response.getHeaders()));
         } catch (IOException ex) {
-            logger.error(String.format(LOG_SENDGRID_FAIL, fromAddress, toAddress, subject));
+            logger.error(String.format(LOG_SENDGRID_FAIL, fromAddress, anonymize(toAddress), subject));
             logger.error(Arrays.toString(ex.getStackTrace()));
         }
     }
