@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Arrays;
 
+import static pl.pelipe.emailmicroservice.config.Keys.*;
+
 @Service
 public class SendGridEmailService {
 
@@ -28,13 +30,15 @@ public class SendGridEmailService {
             request.setMethod(Method.POST);
             request.setEndpoint("mail/send");
             request.setBody(mail.build());
+            logger.info(String.format(LOG_SENDGRID_EMAIL_SENDING_INFO, toAddress));
             Response response = sendGrid.api(request);
-            logger.info("SendGrid response code: [" + response.getStatusCode() + "]");
-            logger.info("SendGrid response body: [" + response.getBody() + "]");
-            logger.info("SendGrid response headers: [" + response.getHeaders() + "]");
+            logger.info(String.format(LOG_SENDGRID_RESPONSE_CODE, response.getStatusCode()));
+            if (!response.getBody().isEmpty()) {
+                logger.info(String.format(LOG_SENDGRID_RESPONSE_BODY, response.getBody()));
+            }
+            logger.debug(String.format(LOG_SENDGRID_RESPONSE_HEADERS, response.getHeaders()));
         } catch (IOException ex) {
-            logger.error(this.getClass().getSimpleName() + " has failed to send email from = ["
-                    + fromAddress + " to = [" + toAddress + "], subject = [" + subject);
+            logger.error(String.format(LOG_SENDGRID_FAIL, fromAddress, toAddress, subject));
             logger.error(Arrays.toString(ex.getStackTrace()));
         }
     }

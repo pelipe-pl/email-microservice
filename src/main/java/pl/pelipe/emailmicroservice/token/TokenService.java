@@ -38,7 +38,7 @@ public class TokenService {
         tokenEntity.setIsActive(true);
         tokenEntity.setOwnerEmail(tokenOwnerEmail);
         repository.save(tokenEntity);
-        logger.info(String.format(TOKEN_INFO_CREATED, tokenOwnerEmail));
+        logger.info(String.format(LOG_TOKEN_CREATED, tokenOwnerEmail));
         notifyTokenOwner(tokenEntity);
         return toDto(tokenEntity);
     }
@@ -52,7 +52,7 @@ public class TokenService {
     public boolean existByTokenValue(String token) {
 
         boolean result = repository.existsByTokenValue(token);
-        if (!result) logger.warn(String.format(TOKEN_INFO_NOT_EXISTING, token));
+        if (!result) logger.warn(String.format(LOG_TOKEN_NOT_EXISTING, token));
         return result;
     }
 
