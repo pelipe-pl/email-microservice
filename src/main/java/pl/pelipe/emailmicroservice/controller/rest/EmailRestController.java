@@ -12,11 +12,11 @@ import static pl.pelipe.emailmicroservice.config.Keys.REST_EMAIL_INVALID_TOKEN_M
 import static pl.pelipe.emailmicroservice.config.Keys.REST_EMAIL_SUCCESS_MSG;
 
 @RestController
-public class EmailController {
+public class EmailRestController {
 
     private final EmailService emailService;
 
-    public EmailController(EmailService emailService) {
+    public EmailRestController(EmailService emailService) {
         this.emailService = emailService;
     }
 

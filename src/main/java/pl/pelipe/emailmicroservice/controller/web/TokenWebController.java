@@ -12,11 +12,11 @@ import pl.pelipe.emailmicroservice.token.TokenService;
 import javax.validation.Valid;
 
 @Controller(value = "/token")
-public class TokenController {
+public class TokenWebController {
 
     private final TokenService tokenService;
 
-    public TokenController(TokenService tokenService) {
+    public TokenWebController(TokenService tokenService) {
         this.tokenService = tokenService;
     }
 

@@ -9,12 +9,12 @@ import pl.pelipe.emailmicroservice.dashboard.UserStatsScheduledService;
 
 
 @Controller
-public class DashboardController {
+public class DashboardWebController {
 
     private UserStatsScheduledService userStatsService;
     private TokenStatsScheduledService tokenStatsService;
 
-    public DashboardController(UserStatsScheduledService userStatsService, TokenStatsScheduledService tokenStatsScheduledService) {
+    public DashboardWebController(UserStatsScheduledService userStatsService, TokenStatsScheduledService tokenStatsScheduledService) {
         this.userStatsService = userStatsService;
         this.tokenStatsService = tokenStatsScheduledService;
     }

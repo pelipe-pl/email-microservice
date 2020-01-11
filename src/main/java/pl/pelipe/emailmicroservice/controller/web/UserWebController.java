@@ -13,12 +13,12 @@ import pl.pelipe.emailmicroservice.user.UserValidator;
 import java.security.Principal;
 
 @Controller
-public class UserController {
+public class UserWebController {
 
     private final UserService userService;
     private final UserValidator userValidator;
 
-    public UserController(UserService userService, UserValidator userValidator) {
+    public UserWebController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
         this.userValidator = userValidator;
     }

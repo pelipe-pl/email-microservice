@@ -9,11 +9,11 @@ import pl.pelipe.emailmicroservice.token.TokenInfoDto;
 import pl.pelipe.emailmicroservice.token.TokenService;
 
 @RestController
-public class TokenController {
+public class TokenRestController {
 
     private final TokenService tokenService;
 
-    public TokenController(TokenService tokenService) {
+    public TokenRestController(TokenService tokenService) {
         this.tokenService = tokenService;
     }
 
