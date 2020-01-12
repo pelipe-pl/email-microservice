@@ -8,6 +8,10 @@ public class Keys {
     public static final String LOG_TOKEN_INVALID = "Invalid token value %s used for email send. Token is invalid, expired or reached daily limit.";
     public static final String LOG_TOKEN_USAGE_LIMIT_REACHED = "Daily usage limit of %s has been reached for token id %s";
 
+    public static final String LOG_USER_NOT_FOUND = "User with username %s not found.";
+    public static final String LOG_USER_REGISTRATION = "New user %s has registered with user id: %s.";
+    public static final String LOG_USER_UPDATE = "User data for %s has been updated.";
+
     public static final String LOG_SCHEDULER_USER_STATS_UPDATE = "User stats successfully updated by scheduler";
     public static final String LOG_SCHEDULER_TOKEN_STATS_UPDATE = "Token stats successfully updated by scheduler";
 

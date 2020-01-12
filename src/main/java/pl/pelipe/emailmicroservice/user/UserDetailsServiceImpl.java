@@ -2,7 +2,6 @@ package pl.pelipe.emailmicroservice.user;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -15,13 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
+import static pl.pelipe.emailmicroservice.config.Keys.LOG_USER_NOT_FOUND;
+
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
     private Logger logger = LoggerFactory.getLogger(UserDetailsServiceImpl.class);
 
-    @Autowired
     public UserDetailsServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
@@ -31,18 +31,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         UserEntity userEntity = userRepository.getByUsername(username);
         if (userEntity == null) {
-            logger.warn("User not found for username: [" + username + "]");
-            throw new UsernameNotFoundException("User not found");
+            logger.warn(String.format(LOG_USER_NOT_FOUND, username));
+            throw new UsernameNotFoundException(String.format(LOG_USER_NOT_FOUND, username));
         }
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet();
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         for (Role role : userEntity.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
-        logger.info("User logged in: ["+userEntity.getUsername()+"]");
         return new User(
                 userEntity.getUsername(),
                 userEntity.getPassword(),
-                 grantedAuthorities);
+                grantedAuthorities);
     }
 }
