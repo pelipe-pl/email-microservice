@@ -34,7 +34,7 @@ public class TokenStatsScheduledService {
         tokenStats.put("activeTokens", activeTokens);
         tokenStats.put("newTokensLast7days", newTokensLast7days);
 
-        logger.info(LOG_SCHEDULER_TOKEN_STATS_UPDATE);
+        logger.debug(LOG_SCHEDULER_TOKEN_STATS_UPDATE);
     }
 
     public Map<String, Long> getTokenStats() {

@@ -34,7 +34,7 @@ public class UserStatsScheduledService {
         userStats.put("usersActive", usersActive);
         userStats.put("usersRegisteredLast7days", usersRegisteredLast7days);
 
-        logger.info(LOG_SCHEDULER_USER_STATS_UPDATE);
+        logger.debug(LOG_SCHEDULER_USER_STATS_UPDATE);
     }
 
     public Map<String, Long> getUserStatsMap() {
