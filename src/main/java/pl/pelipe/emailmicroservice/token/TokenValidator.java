@@ -58,11 +58,13 @@ public class TokenValidator {
         Long dailyUsageCounter = tokenEntity.getDailyUsageCounter();
         LocalDateTime lastUsed = tokenEntity.getLastUsed();
 
-        if (lastUsed.isBefore(LocalDateTime.now().minusHours(24))) {
-            tokenEntity.setDailyUsageCounter(1L);
-        }
-        if (!lastUsed.isBefore(LocalDateTime.now().minusHours(24))) {
-            tokenEntity.setDailyUsageCounter(dailyUsageCounter + 1L);
+        if (lastUsed != null) {
+            if (lastUsed.isBefore(LocalDateTime.now().minusHours(24))) {
+                tokenEntity.setDailyUsageCounter(1L);
+            }
+            if (!lastUsed.isBefore(LocalDateTime.now().minusHours(24))) {
+                tokenEntity.setDailyUsageCounter(dailyUsageCounter + 1L);
+            }
         }
         tokenEntity.setLastUsed(LocalDateTime.now());
         tokenRepository.save(tokenEntity);
