@@ -32,7 +32,7 @@ public class UserWebController {
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String login(Model model, String error, String logout, Principal principal) {
         if (error != null) {
-            model.addAttribute("error", "Invalid username/password!");
+            model.addAttribute("error", "Invalid credentials or inactive user!");
         }
         if (logout != null) {
             model.addAttribute("message", "You have been logged out.");
