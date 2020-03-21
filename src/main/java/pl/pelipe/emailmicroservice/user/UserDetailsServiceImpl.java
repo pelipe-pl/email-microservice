@@ -39,9 +39,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         for (Role role : userEntity.getRoles()) {
             grantedAuthorities.add(new SimpleGrantedAuthority(role.getName()));
         }
+
         return new User(
                 userEntity.getUsername(),
                 userEntity.getPassword(),
+                userEntity.getIsActive(),
+                true,
+                true,
+                true,
                 grantedAuthorities);
     }
 }
