@@ -37,12 +37,20 @@ public class UserService {
     }
 
     public void update(UserEntity updatedUser) {
-        UserEntity userEntity = userRepository.getById(updatedUser.getId());
+        UserEntity userEntity = getById(updatedUser.getId());
         if (updatedUser.getFirstName() != null) userEntity.setFirstName(updatedUser.getFirstName());
         if (updatedUser.getLastName() != null) userEntity.setLastName(updatedUser.getLastName());
         userEntity.setLastChange(LocalDateTime.now());
         userRepository.save(userEntity);
         logger.info(String.format(LOG_USER_UPDATE, anonymize(userEntity.getUsername())));
+    }
+
+    public void updateLastLogon(String username) {
+        UserEntity userEntity = getByUsername(username);
+        if (userEntity != null) {
+            userEntity.setLastLogon(LocalDateTime.now());
+            userRepository.save(userEntity);
+        }
     }
 
     public UserEntity getById(Long id) {
