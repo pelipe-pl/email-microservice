@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 
-import static pl.pelipe.emailmicroservice.config.Keys.LOG_USER_REGISTRATION;
-import static pl.pelipe.emailmicroservice.config.Keys.LOG_USER_UPDATE;
+import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_USER_REGISTRATION;
+import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_USER_UPDATE;
 import static pl.pelipe.emailmicroservice.email.EmailUtils.anonymize;
 
 @Service
