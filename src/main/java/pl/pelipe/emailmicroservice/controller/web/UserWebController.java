@@ -1,5 +1,7 @@
 package pl.pelipe.emailmicroservice.controller.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,11 +14,14 @@ import pl.pelipe.emailmicroservice.user.UserValidator;
 
 import java.security.Principal;
 
+import static pl.pelipe.emailmicroservice.config.Keys.LOG_USER_LOGGED_IN;
+
 @Controller
 public class UserWebController {
 
     private final UserService userService;
     private final UserValidator userValidator;
+    private Logger logger = LoggerFactory.getLogger(UserWebController.class);
 
     public UserWebController(UserService userService, UserValidator userValidator) {
         this.userService = userService;
@@ -40,6 +45,18 @@ public class UserWebController {
         if (principal != null) return "redirect:/";
         else
             return "login";
+    }
+
+    @RequestMapping(value = "/process-login", method = RequestMethod.GET)
+    public String processLogin(Principal principal) {
+        if (principal != null) {
+            String username = principal.getName();
+            userService.updateLastLogon(username);
+            logger.info(String.format(LOG_USER_LOGGED_IN, username));
+            return "redirect:/";
+        } else {
+            return "redirect:/login";
+        }
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)
