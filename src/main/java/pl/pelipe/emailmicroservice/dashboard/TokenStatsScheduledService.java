@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_SCHEDULER_TOKEN_STATS_UPDATE;
+import static pl.pelipe.emailmicroservice.config.Keys.LOG_SCHEDULER_TOKEN_STATS_UPDATE;
 
 @Service
 public class TokenStatsScheduledService {

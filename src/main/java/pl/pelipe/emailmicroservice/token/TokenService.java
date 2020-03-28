@@ -10,7 +10,7 @@ import pl.pelipe.emailmicroservice.email.EmailService;
 
 import java.time.LocalDateTime;
 
-import static pl.pelipe.emailmicroservice.config.keys.Keys.*;
+import static pl.pelipe.emailmicroservice.config.Keys.*;
 
 @Service
 public class TokenService {

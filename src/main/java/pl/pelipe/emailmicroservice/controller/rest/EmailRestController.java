@@ -8,8 +8,8 @@ import pl.pelipe.emailmicroservice.email.EmailService;
 
 import javax.validation.Valid;
 
-import static pl.pelipe.emailmicroservice.config.keys.Keys.REST_EMAIL_INVALID_TOKEN_MSG;
-import static pl.pelipe.emailmicroservice.config.keys.Keys.REST_EMAIL_SUCCESS_MSG;
+import static pl.pelipe.emailmicroservice.config.Keys.REST_EMAIL_INVALID_TOKEN_MSG;
+import static pl.pelipe.emailmicroservice.config.Keys.REST_EMAIL_SUCCESS_MSG;
 
 @RestController
 public class EmailRestController {
