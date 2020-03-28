@@ -1,4 +1,4 @@
-package pl.pelipe.emailmicroservice.config;
+package pl.pelipe.emailmicroservice.config.keys;
 
 public class Keys {
 
@@ -12,6 +12,7 @@ public class Keys {
     public static final String LOG_USER_REGISTRATION = "New user %s has registered with user id: %s.";
     public static final String LOG_USER_UPDATE = "User data for %s has been updated.";
     public static final String LOG_USER_LOGGED_IN = "User %s has logged in.";
+    public static final String LOG_USER_LOGGED_OUT = "User %s has logged out.";
 
     public static final String LOG_SCHEDULER_USER_STATS_UPDATE = "User stats successfully updated by scheduler";
     public static final String LOG_SCHEDULER_TOKEN_STATS_UPDATE = "Token stats successfully updated by scheduler";
