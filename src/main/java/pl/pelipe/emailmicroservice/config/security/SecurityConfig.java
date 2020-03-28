@@ -21,12 +21,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final Environment environment;
     private final AuthenticationSuccessHandlerImpl authenticationSuccessHandler;
     private final LogoutSuccessHandlerImpl logoutSuccessHandler;
+    private final AuthenticationFailureHandlerImpl authenticationFailureHandler;
 
-    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, Environment environment, AuthenticationSuccessHandlerImpl authenticationSuccessHandler, LogoutSuccessHandlerImpl logoutSuccessHandler) {
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, Environment environment, AuthenticationSuccessHandlerImpl authenticationSuccessHandler, LogoutSuccessHandlerImpl logoutSuccessHandler, AuthenticationFailureHandlerImpl authenticationFailureHandler) {
         this.userDetailsService = userDetailsService;
         this.environment = environment;
         this.authenticationSuccessHandler = authenticationSuccessHandler;
         this.logoutSuccessHandler = logoutSuccessHandler;
+        this.authenticationFailureHandler = authenticationFailureHandler;
     }
 
     @Bean
@@ -51,6 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin()
                 .successHandler(authenticationSuccessHandler)
+                .failureHandler(authenticationFailureHandler)
 
                 .and()
                 .logout()

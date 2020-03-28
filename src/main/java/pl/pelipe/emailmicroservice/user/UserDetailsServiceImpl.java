@@ -58,4 +58,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             userRepository.save(userEntity);
         }
     }
+
+    public void updateLastLogonFailure(String username){
+        UserEntity userEntity = userRepository.getByUsername(username);
+        if (userEntity != null) {
+            userEntity.setLastLogonFailure(LocalDateTime.now());
+            userRepository.save(userEntity);
+        }
+    }
 }

@@ -43,6 +43,8 @@ public class UserEntity {
 
     private LocalDateTime lastLogon;
 
+    private LocalDateTime lastLogonFailure;
+
     private Boolean isActive;
 
     @ManyToMany
