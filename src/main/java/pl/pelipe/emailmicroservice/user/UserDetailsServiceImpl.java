@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,5 +49,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 true,
                 true,
                 grantedAuthorities);
+    }
+
+    public void updateLastLogon(String username) {
+        UserEntity userEntity = userRepository.getByUsername(username);
+        if (userEntity != null) {
+            userEntity.setLastLogon(LocalDateTime.now());
+            userRepository.save(userEntity);
+        }
     }
 }

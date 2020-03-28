@@ -45,14 +45,6 @@ public class UserService {
         logger.info(String.format(LOG_USER_UPDATE, anonymize(userEntity.getUsername())));
     }
 
-    public void updateLastLogon(String username) {
-        UserEntity userEntity = getByUsername(username);
-        if (userEntity != null) {
-            userEntity.setLastLogon(LocalDateTime.now());
-            userRepository.save(userEntity);
-        }
-    }
-
     public UserEntity getById(Long id) {
         return userRepository.getById(id);
     }
