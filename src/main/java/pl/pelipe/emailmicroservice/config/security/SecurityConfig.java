@@ -1,4 +1,4 @@
-package pl.pelipe.emailmicroservice.config;
+package pl.pelipe.emailmicroservice.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -19,10 +19,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
     private final Environment environment;
+    private final AuthenticationSuccessHandlerImpl authenticationSuccessHandler;
+    private final LogoutSuccessHandlerImpl logoutSuccessHandler;
 
-    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, Environment environment) {
+    public SecurityConfig(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, Environment environment, AuthenticationSuccessHandlerImpl authenticationSuccessHandler, LogoutSuccessHandlerImpl logoutSuccessHandler) {
         this.userDetailsService = userDetailsService;
         this.environment = environment;
+        this.authenticationSuccessHandler = authenticationSuccessHandler;
+        this.logoutSuccessHandler = logoutSuccessHandler;
     }
 
     @Bean
@@ -46,10 +50,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/process-login", true)
+                .successHandler(authenticationSuccessHandler)
 
                 .and()
                 .logout()
+                .logoutSuccessHandler(logoutSuccessHandler)
                 .deleteCookies("JSESSIONID")
 
                 .and()

@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashSet;
 import java.util.Set;
 
-import static pl.pelipe.emailmicroservice.config.Keys.LOG_USER_NOT_FOUND;
+import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_USER_NOT_FOUND;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

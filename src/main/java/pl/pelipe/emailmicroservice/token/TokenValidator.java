@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
-import static pl.pelipe.emailmicroservice.config.Keys.*;
+import static pl.pelipe.emailmicroservice.config.keys.Keys.*;
 
 @Service
 public class TokenValidator {
