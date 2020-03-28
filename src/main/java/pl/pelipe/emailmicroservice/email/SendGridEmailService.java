@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.Arrays;
 
-import static pl.pelipe.emailmicroservice.config.Keys.*;
+import static pl.pelipe.emailmicroservice.config.keys.Keys.*;
 import static pl.pelipe.emailmicroservice.email.EmailUtils.anonymize;
 
 @Service

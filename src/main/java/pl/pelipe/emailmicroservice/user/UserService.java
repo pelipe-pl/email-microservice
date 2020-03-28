@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 
-import static pl.pelipe.emailmicroservice.config.Keys.LOG_USER_REGISTRATION;
-import static pl.pelipe.emailmicroservice.config.Keys.LOG_USER_UPDATE;
+import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_USER_REGISTRATION;
+import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_USER_UPDATE;
 import static pl.pelipe.emailmicroservice.email.EmailUtils.anonymize;
 
 @Service
@@ -43,14 +43,6 @@ public class UserService {
         userEntity.setLastChange(LocalDateTime.now());
         userRepository.save(userEntity);
         logger.info(String.format(LOG_USER_UPDATE, anonymize(userEntity.getUsername())));
-    }
-
-    public void updateLastLogon(String username) {
-        UserEntity userEntity = getByUsername(username);
-        if (userEntity != null) {
-            userEntity.setLastLogon(LocalDateTime.now());
-            userRepository.save(userEntity);
-        }
     }
 
     public UserEntity getById(Long id) {

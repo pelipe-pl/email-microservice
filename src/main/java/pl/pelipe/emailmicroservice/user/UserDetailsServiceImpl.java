@@ -11,10 +11,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
-import static pl.pelipe.emailmicroservice.config.Keys.LOG_USER_NOT_FOUND;
+import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_USER_NOT_FOUND;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -48,5 +49,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 true,
                 true,
                 grantedAuthorities);
+    }
+
+    public void updateLastLogon(String username) {
+        UserEntity userEntity = userRepository.getByUsername(username);
+        if (userEntity != null) {
+            userEntity.setLastLogon(LocalDateTime.now());
+            userRepository.save(userEntity);
+        }
     }
 }
