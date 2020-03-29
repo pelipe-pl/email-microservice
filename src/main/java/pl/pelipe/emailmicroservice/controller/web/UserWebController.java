@@ -3,6 +3,7 @@ package pl.pelipe.emailmicroservice.controller.web;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,8 +53,15 @@ public class UserWebController {
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public String registration(@ModelAttribute("userForm") UserEntity userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("error", bindingResult.toString());
+            StringBuilder errorMessages = new StringBuilder();
+            for (FieldError error : bindingResult.getFieldErrors()) {
+                if (error.getCode() != null) {
+                    errorMessages.append(error.getCode()).append(" ");
+                }
+            }
+            model.addAttribute("error", errorMessages);
             return "register";
         }
         userService.save(userForm);

@@ -33,7 +33,7 @@ public class AuthenticationFailureHandlerImpl extends SimpleUrlAuthenticationFai
                 username,
                 e.getMessage(),
                 httpServletRequest.getRemoteAddr()));
-        
+
         super.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
     }
 }
