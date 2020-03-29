@@ -37,6 +37,7 @@
     </style>
 </head>
 <body>
+<th:block th:replace="common/notification.html">Notification</th:block>
 <div id="register">
     <h1 class="text-center text-white pt-5">e-mail microservice</h1>
     <div class="container">
@@ -62,7 +63,7 @@
                             <input type="password" name="password" id="password" class="form-control" required>
                         </div>
                         <div>
-                        <label for="passwordConfirm" class="text-info">Password:</label><br>
+                        <label for="passwordConfirm" class="text-info">Password confirmation:</label><br>
                             <input type="password" name="passwordConfirm" id="passwordConfirm" class="form-control" required>
                         </div>
                         <div id="submitButton" class="form-group">

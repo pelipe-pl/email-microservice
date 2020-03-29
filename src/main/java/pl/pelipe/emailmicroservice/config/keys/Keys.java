@@ -29,4 +29,11 @@ public class Keys {
 
     public static final String REST_EMAIL_SUCCESS_MSG = "Your e-mail has been successfully processed.";
     public static final String REST_EMAIL_INVALID_TOKEN_MSG = "Your token is invalid, expired or reached your daily limit.";
+
+    public static final String USER_VALIDATION_ERROR_PASSWORDS_DONT_MATCH = "Passwords do not match.";
+    public static final String USER_VALIDATION_ERROR_PASSWORD_LENGTH = "Password must be %s-%s characters long.";
+    public static final String USER_VALIDATION_ERROR_PASSWORD_NOT_EMPTY = "Password cannot be empty.";
+    public static final String USER_VALIDATION_ERROR_USERNAME_LENGTH = "Username must be %s-%s characters long.";
+    public static final String USER_VALIDATION_ERROR_USERNAME_TAKEN = "User %s already exists.";
+    public static final String USER_VALIDATION_ERROR_USERNAME_NOT_EMPTY = "Username cannot be empty.";
 }
