@@ -9,26 +9,21 @@ public class EmailService {
     private final SendGridEmailService sendGridEmailService;
     private final TokenValidator tokenValidator;
 
-    public EmailService(SendGridEmailService sendGridEmailService, TokenValidator tokenValidator) {
+    public EmailService(SendGridEmailService sendGridEmailService, TokenValidator tokenValidator, EmailArchiveService emailArchiveService) {
         this.sendGridEmailService = sendGridEmailService;
         this.tokenValidator = tokenValidator;
-
     }
 
     public boolean send(String token, EmailBody emailBody) {
 
         if (tokenValidator.validate(token)) {
-            sendGridEmailService.send(
-                    emailBody.getFromAddress(),
-                    emailBody.getSenderName(),
-                    emailBody.getToAddress(),
-                    emailBody.getSubject(),
-                    emailBody.getContent());
+            send(emailBody);
             return true;
         } else return false;
     }
 
     public void send(EmailBody emailBody) {
+
         sendGridEmailService.send(
                 emailBody.getFromAddress(),
                 emailBody.getSenderName(),

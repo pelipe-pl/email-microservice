@@ -18,7 +18,7 @@ public class TokenService {
     private final TokenRepository repository;
     private final EmailService emailService;
     private final Environment environment;
-    private Logger logger = LoggerFactory.getLogger(TokenService.class);
+    private final Logger logger = LoggerFactory.getLogger(TokenService.class);
 
     public TokenService(TokenRepository repository, EmailService emailService, Environment environment) {
         this.repository = repository;
