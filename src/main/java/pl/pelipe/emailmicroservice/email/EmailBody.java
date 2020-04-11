@@ -6,7 +6,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 public class EmailBody {
-
+    
     @NotNull
     private String senderName;
     @NotNull

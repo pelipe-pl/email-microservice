@@ -2,9 +2,12 @@ package pl.pelipe.emailmicroservice.controller.rest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import pl.pelipe.emailmicroservice.email.EmailBody;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import pl.pelipe.emailmicroservice.email.EmailService;
+import pl.pelipe.emailmicroservice.email.Payload;
 
 import javax.validation.Valid;
 
@@ -20,11 +23,11 @@ public class EmailRestController {
         this.emailService = emailService;
     }
 
-    @PostMapping("/rest/send/{token}")
+    @PostMapping("/rest/send")
     @ResponseBody
-    public ResponseEntity<String> sendEmail(@PathVariable String token, @Valid @RequestBody EmailBody emailBody) {
+    public ResponseEntity<String> sendEmail(@Valid @RequestBody Payload payload) {
 
-        boolean result = emailService.send(token, emailBody);
+        boolean result = emailService.send(payload.getTokenValue(), payload.getEmailBody());
         if (result) return new ResponseEntity<>(REST_EMAIL_SUCCESS_MSG, HttpStatus.OK);
         else return new ResponseEntity<>(REST_EMAIL_INVALID_TOKEN_MSG, HttpStatus.UNAUTHORIZED);
     }
