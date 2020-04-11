@@ -5,7 +5,6 @@ import lombok.Data;
 import javax.persistence.*;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "email")
@@ -30,6 +29,8 @@ public class EmailArchiveEntity {
     private EmailStatus status;
 
     private String provider;
+
+    private String providerId;
 
     private Integer sendRetry;
 

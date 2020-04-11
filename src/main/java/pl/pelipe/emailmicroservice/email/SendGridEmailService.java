@@ -45,7 +45,9 @@ public class SendGridEmailService implements SendEmailService {
             logger.info(String.format(LOG_SENDGRID_RESPONSE_CODE, response.getStatusCode()));
             if (!response.getBody().isEmpty()) {
                 logger.info(String.format(LOG_SENDGRID_RESPONSE_BODY, response.getBody()));
+
             }
+            logger.info("SendGrid X-Message-Id: "+response.getHeaders().get("X-Message-Id"));
             logger.debug(String.format(LOG_SENDGRID_RESPONSE_HEADERS, response.getHeaders()));
         } catch (IOException ex) {
             logger.error(String.format(LOG_SENDGRID_FAIL, fromAddress, anonymize(toAddress), subject));
@@ -55,6 +57,4 @@ public class SendGridEmailService implements SendEmailService {
             emailArchiveService.updateStatus(emailArchiveEntity, response);
         }
     }
-
-
 }

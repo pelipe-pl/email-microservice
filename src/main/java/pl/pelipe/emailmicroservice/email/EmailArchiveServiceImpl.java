@@ -42,6 +42,7 @@ public class EmailArchiveServiceImpl implements EmailArchiveService {
         int statusCode = response.getStatusCode();
         email.setProviderResponse(statusCode);
         email.setLastUpdate(LocalDateTime.now());
+        if (response.getHeaders() != null) email.setProviderId(response.getHeaders().get("X-Message-Id"));
         if (statusCode == 202) {
             email.setStatus(EmailStatus.SENT);
             email.setSuccessSent(LocalDateTime.now());

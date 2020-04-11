@@ -15,10 +15,10 @@ import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_SCHEDULER_TOKEN_S
 @Service
 public class TokenStatsScheduledService {
 
-    private TokenRepository tokenRepository;
-    private Map<String, Long> tokenStats = new HashMap<>();
+    private final TokenRepository tokenRepository;
+    private final Map<String, Long> tokenStats = new HashMap<>();
 
-    private Logger logger = LoggerFactory.getLogger(TokenStatsScheduledService.class);
+    private final Logger logger = LoggerFactory.getLogger(TokenStatsScheduledService.class);
 
     public TokenStatsScheduledService(TokenRepository tokenRepository) {
         this.tokenRepository = tokenRepository;
