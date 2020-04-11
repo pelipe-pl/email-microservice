@@ -1,6 +1,9 @@
 package pl.pelipe.emailmicroservice.email;
 
-import com.sendgrid.*;
+import com.sendgrid.Method;
+import com.sendgrid.Request;
+import com.sendgrid.Response;
+import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
@@ -10,7 +13,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.Arrays;
 
 import static pl.pelipe.emailmicroservice.config.keys.Keys.*;
@@ -28,7 +30,7 @@ public class SendGridEmailService implements SendEmailService {
         this.emailArchiveService = emailArchiveService1;
     }
 
-    public void send(String fromAddress, String senderName, String toAddress, String subject, String content) {
+    public boolean send(String fromAddress, String senderName, String toAddress, String subject, String content) {
 
         Mail sendGridEmail = new Mail(new Email(fromAddress, senderName), subject, new Email(toAddress), new Content("text/html", content));
         EmailArchiveEntity emailArchiveEntity = emailArchiveService.createEmailArchive(sendGridEmail);
@@ -45,16 +47,15 @@ public class SendGridEmailService implements SendEmailService {
             logger.info(String.format(LOG_SENDGRID_RESPONSE_CODE, response.getStatusCode()));
             if (!response.getBody().isEmpty()) {
                 logger.info(String.format(LOG_SENDGRID_RESPONSE_BODY, response.getBody()));
-
             }
-            logger.info("SendGrid X-Message-Id: "+response.getHeaders().get("X-Message-Id"));
+            logger.info("SendGrid X-Message-Id: " + response.getHeaders().get("X-Message-Id"));
             logger.debug(String.format(LOG_SENDGRID_RESPONSE_HEADERS, response.getHeaders()));
         } catch (IOException ex) {
             logger.error(String.format(LOG_SENDGRID_FAIL, fromAddress, anonymize(toAddress), subject));
             logger.error(Arrays.toString(ex.getStackTrace()));
-        }
-        finally {
+        } finally {
             emailArchiveService.updateStatus(emailArchiveEntity, response);
         }
+        return response.getStatusCode() == 202;
     }
 }

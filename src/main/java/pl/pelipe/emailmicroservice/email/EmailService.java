@@ -3,6 +3,10 @@ package pl.pelipe.emailmicroservice.email;
 import org.springframework.stereotype.Service;
 import pl.pelipe.emailmicroservice.token.TokenValidator;
 
+import javax.validation.constraints.NotNull;
+
+import static pl.pelipe.emailmicroservice.email.ResponseStatus.*;
+
 @Service
 public class EmailService {
 
@@ -14,17 +18,21 @@ public class EmailService {
         this.tokenValidator = tokenValidator;
     }
 
-    public boolean send(String token, EmailBody emailBody) {
+    public ResponseStatus send(Payload payload) {
 
-        if (tokenValidator.validate(token)) {
-            send(emailBody);
-            return true;
-        } else return false;
+        @NotNull EmailBody emailBody = payload.getEmailBody();
+        @NotNull String token = payload.getTokenValue();
+
+        if (!tokenValidator.validate(token)) return TOKEN_ERROR;
+        boolean result = send(emailBody);
+
+        if (result) return OK;
+        else return FAILED;
     }
 
-    public void send(EmailBody emailBody) {
+    public boolean send(EmailBody emailBody) {
 
-        sendGridEmailService.send(
+        return sendGridEmailService.send(
                 emailBody.getFromAddress(),
                 emailBody.getSenderName(),
                 emailBody.getToAddress(),
