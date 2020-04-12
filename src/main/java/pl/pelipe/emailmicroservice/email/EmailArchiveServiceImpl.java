@@ -1,6 +1,5 @@
 package pl.pelipe.emailmicroservice.email;
 
-import com.sendgrid.Response;
 import com.sendgrid.helpers.mail.Mail;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +19,8 @@ public class EmailArchiveServiceImpl implements EmailArchiveService {
         emailArchiveRepository.save(emailArchiveEntity);
     }
 
-    public EmailArchiveEntity createEmailArchive(Mail mail) {
+    @Override
+    public EmailArchiveEntity create(Mail mail) {
         EmailArchiveEntity email = new EmailArchiveEntity();
 
         email.setStatus(EmailStatus.NEW);
@@ -36,20 +36,5 @@ public class EmailArchiveServiceImpl implements EmailArchiveService {
         save(email);
 
         return email;
-    }
-
-    public void updateStatus(EmailArchiveEntity email, Response response) {
-        int statusCode = response.getStatusCode();
-        email.setProviderResponse(statusCode);
-        email.setLastUpdate(LocalDateTime.now());
-        if (response.getHeaders() != null) email.setProviderId(response.getHeaders().get("X-Message-Id"));
-        if (statusCode == 202) {
-            email.setStatus(EmailStatus.SENT);
-            email.setSuccessSent(LocalDateTime.now());
-        } else {
-            email.setStatus(EmailStatus.PENDING);
-            email.setSendRetry(1);
-        }
-        save(email);
     }
 }

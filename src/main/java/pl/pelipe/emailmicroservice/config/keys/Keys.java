@@ -22,7 +22,7 @@ public class Keys {
     public static final String LOG_SENDGRID_RESPONSE_CODE = "SendGrid response code: %s";
     public static final String LOG_SENDGRID_RESPONSE_BODY = "SendGrid response body: %s";
     public static final String LOG_SENDGRID_RESPONSE_HEADERS = "SendGrid response headers: %s";
-    public static final String LOG_SENDGRID_FAIL = "Failed to send email from: %s, to: %s, subject: %s";
+    public static final String LOG_SENDGRID_FAIL = "Failed to send email from: %s, to: %s";
 
     public static final String EMAIL_SUBJECT_NEW_TOKEN_NOTIFY = "New token has been generated for you";
     public static final String EMAIL_CONTENT_NEW_TOKEN_NOTIFY = "Your new token is: %s";

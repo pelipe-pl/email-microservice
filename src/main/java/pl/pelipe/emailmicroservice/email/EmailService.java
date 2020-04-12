@@ -39,4 +39,8 @@ public class EmailService {
                 emailBody.getSubject(),
                 emailBody.getContent());
     }
+
+    public boolean resend(EmailArchiveEntity emailArchiveEntity) {
+        return sendGridEmailService.resend(emailArchiveEntity);
+    }
 }
