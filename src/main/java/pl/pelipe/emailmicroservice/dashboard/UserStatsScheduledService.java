@@ -15,9 +15,9 @@ import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_SCHEDULER_USER_ST
 @Service
 public class UserStatsScheduledService {
 
-    private UserRepository userRepository;
-    private Map<String, Long> userStats = new HashMap<>();
-    private Logger logger = LoggerFactory.getLogger(UserStatsScheduledService.class);
+    private final UserRepository userRepository;
+    private final Map<String, Long> userStats = new HashMap<>();
+    private final Logger logger = LoggerFactory.getLogger(UserStatsScheduledService.class);
 
     public UserStatsScheduledService(UserRepository userRepository) {
         this.userRepository = userRepository;

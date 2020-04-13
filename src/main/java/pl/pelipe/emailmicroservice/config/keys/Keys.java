@@ -20,7 +20,6 @@ public class Keys {
 
     public static final String LOG_SENDGRID_EMAIL_SENDING_INFO = "Trying to send email to: %s";
     public static final String LOG_SENDGRID_RESPONSE_CODE = "SendGrid response code: %s";
-    public static final String LOG_SENDGRID_RESPONSE_BODY = "SendGrid response body: %s";
     public static final String LOG_SENDGRID_RESPONSE_HEADERS = "SendGrid response headers: %s";
     public static final String LOG_SENDGRID_FAIL = "Failed to send email from: %s, to: %s";
 

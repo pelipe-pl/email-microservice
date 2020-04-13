@@ -21,15 +21,28 @@ public class EmailResendScheduledService {
         this.sendEmailService = sendEmailService;
     }
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRate = 1800000)
     private void resendAllPending() {
-        logger.info("ResendAllPending service starts.");
+        logger.info("Resend all pending emails service service starts.");
         List<EmailArchiveEntity> pendingEmails = emailArchiveRepository.getAllByStatusAndSendRetryLessThan(EmailStatus.PENDING, 3);
-        logger.info("ResendAllPending service has " + pendingEmails.size() + " in pending status.");
-        for (EmailArchiveEntity email : pendingEmails) {
-            sendEmailService.resend(email);
+        if (pendingEmails.isEmpty()) {
+            logger.info("No pending mails.");
+            return;
         }
-        logger.info("ResendAllPending email service finished.");
+        logger.info(pendingEmails.size() + " in pending status.");
+        int successCounter = 0;
+        int failureCounter = 0;
+        int processedCounter = 0;
+        for (EmailArchiveEntity email : pendingEmails) {
+            boolean result = sendEmailService.resend(email);
+            processedCounter++;
+            if (result) successCounter++;
+            else failureCounter++;
+        }
+        logger.info("Resend all pending emails service finished.");
+        logger.info("Succeeded: " + successCounter);
+        logger.info("Failed: " + failureCounter);
+        logger.info("Total processed " + processedCounter);
     }
 }
 
