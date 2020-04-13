@@ -8,6 +8,8 @@ import pl.pelipe.emailmicroservice.dashboard.TokenStatsScheduledService;
 
 import java.util.List;
 
+import static pl.pelipe.emailmicroservice.config.keys.Keys.*;
+
 @Service
 public class EmailResendScheduledService {
 
@@ -24,10 +26,10 @@ public class EmailResendScheduledService {
     private void resendAllPending() {
         List<EmailArchiveEntity> pendingEmails = emailArchiveRepository.getAllByStatusAndSendRetryLessThan(EmailStatus.PENDING, 3);
         if (pendingEmails.isEmpty()) {
-            logger.debug("No pending emails for resend.");
+            logger.debug(LOG_EMAIL_RESEND_NO_PENDING_EMAILS);
             return;
         }
-        logger.info("Found " + pendingEmails.size() + " pending emails. Trying to resend...");
+        logger.info(String.format(LOG_EMAIL_RESEND_START, pendingEmails.size()));
         int successCounter = 0;
         int failureCounter = 0;
         int processedCounter = 0;
@@ -37,7 +39,7 @@ public class EmailResendScheduledService {
             if (result) successCounter++;
             else failureCounter++;
         }
-        logger.info("Resend all pending emails service finished.");
-        logger.info("Succeeded: " + successCounter + ", failed: " + failureCounter + ", processed " + processedCounter);
+        logger.info(LOG_EMAIL_RESEND_FINISHED);
+        logger.info(String.format(LOG_EMAIL_RESEND_STATS, successCounter, failureCounter, processedCounter));
     }
 }
