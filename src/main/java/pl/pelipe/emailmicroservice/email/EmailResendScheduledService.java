@@ -11,7 +11,6 @@ import java.util.List;
 @Service
 public class EmailResendScheduledService {
 
-
     private final EmailArchiveRepository emailArchiveRepository;
     private final SendEmailService sendEmailService;
     private final Logger logger = LoggerFactory.getLogger(TokenStatsScheduledService.class);
@@ -23,13 +22,12 @@ public class EmailResendScheduledService {
 
     @Scheduled(fixedRate = 1800000)
     private void resendAllPending() {
-        logger.info("Resend all pending emails service service starts.");
         List<EmailArchiveEntity> pendingEmails = emailArchiveRepository.getAllByStatusAndSendRetryLessThan(EmailStatus.PENDING, 3);
         if (pendingEmails.isEmpty()) {
-            logger.info("No pending mails.");
+            logger.debug("No pending emails for resend.");
             return;
         }
-        logger.info(pendingEmails.size() + " in pending status.");
+        logger.info("Found " + pendingEmails.size() + " pending emails. Trying to resend...");
         int successCounter = 0;
         int failureCounter = 0;
         int processedCounter = 0;
@@ -40,9 +38,6 @@ public class EmailResendScheduledService {
             else failureCounter++;
         }
         logger.info("Resend all pending emails service finished.");
-        logger.info("Succeeded: " + successCounter);
-        logger.info("Failed: " + failureCounter);
-        logger.info("Total processed " + processedCounter);
+        logger.info("Succeeded: " + successCounter + ", failed: " + failureCounter + ", processed " + processedCounter);
     }
 }
-
