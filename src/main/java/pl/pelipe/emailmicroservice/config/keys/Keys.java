@@ -20,9 +20,13 @@ public class Keys {
 
     public static final String LOG_SENDGRID_EMAIL_SENDING_INFO = "Trying to send email to: %s";
     public static final String LOG_SENDGRID_RESPONSE_CODE = "SendGrid response code: %s";
-    public static final String LOG_SENDGRID_RESPONSE_BODY = "SendGrid response body: %s";
     public static final String LOG_SENDGRID_RESPONSE_HEADERS = "SendGrid response headers: %s";
-    public static final String LOG_SENDGRID_FAIL = "Failed to send email from: %s, to: %s, subject: %s";
+    public static final String LOG_SENDGRID_FAIL = "Failed to send email from: %s, to: %s";
+
+    public static final String LOG_EMAIL_RESEND_NO_PENDING_EMAILS = "No pending emails for resend.";
+    public static final String LOG_EMAIL_RESEND_START = "Found %s pending emails. Trying to resend...";
+    public static final String LOG_EMAIL_RESEND_FINISHED = "Email resend service finished.";
+    public static final String LOG_EMAIL_RESEND_STATS = "Succeeded: %s, failed: %s, processed %s";
 
     public static final String EMAIL_SUBJECT_NEW_TOKEN_NOTIFY = "New token has been generated for you";
     public static final String EMAIL_CONTENT_NEW_TOKEN_NOTIFY = "Your new token is: %s";
