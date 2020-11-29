@@ -1,67 +1,105 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>e-mail microservice - Login</title>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background-color: #17a2b8;
-            height: 100vh;
-        }
 
-        #login .container #login-row #login-column #login-box {
-            margin-top: 120px;
-            max-width: 600px;
-            height: 320px;
-            border: 1px solid #9C9C9C;
-            background-color: #EAEAEA;
-        }
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="Pelipe">
 
-        #login .container #login-row #login-column #login-box #login-form {
-            padding: 20px;
-        }
+    <title>Email microservice - Login</title>
 
-        #login .container #login-row #login-column #login-box #login-form #login-link {
-            margin-top: -85px;
-        }
-    </style>
+    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
+          rel="stylesheet">
+    <link href="css/sb-admin-2.css" rel="stylesheet">
+
 </head>
-<body>
+<body class="bg-gradient-primary">
 <th:block th:replace="common/notification.html">Notification</th:block>
-<div id="login">
-    <h1 class="text-center text-white pt-5">e-mail microservice</h1>
-    <div class="container">
-        <div id="login-row" class="row justify-content-center align-items-center">
-            <div id="login-column" class="col-md-6">
-                <div id="login-box" class="col-md-12">
-                    <form id="login-form" class="form" th:action="@{/login}" method="post">
-                        <h3 class="text-center text-info">Login</h3>
-                        <div class="form-group">
-                            <label for="username" class="text-info">E-mail address:</label><br>
-                            <input type="email" name="username" id="username" class="form-control" required>
+<div class="container">
+
+    <!-- Outer Row -->
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <!-- Nested Row within Card Body -->
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                        <div class="col-lg-6">
+                            <div class="p-5">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                </div>
+                                <form id="login-form" class="user" th:action="@{/login}" method="post">
+                                    <div class="form-group">
+                                        <input name="username" id="username" class="form-control form-control-user"
+                                               aria-describedby="emailHelp"
+                                               placeholder="Enter Email Address...">
+                                    </div>
+                                    <div class="form-group">
+                                        <input name="password" type="password" class="form-control form-control-user"
+                                               id="exampleInputPassword" placeholder="Password">
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="custom-control custom-checkbox small">
+                                            <input id="remember-me" name="remember-me" type="checkbox" class="custom-control-input">
+                                            <label class="custom-control-label" for="remember-me">Remember Me</label>
+                                        </div>
+                                    </div>
+
+                                    <input type="submit" name="Login" class="btn btn-primary btn-user btn-block" value="submit">
+
+                                </form>
+                                <hr>
+                                <div class="text-center">
+                                    <a class="small" href="/forgot-password">Forgot Password?</a>
+                                </div>
+                                <div class="text-center">
+                                    <a class="small" href="/register">Create an Account!</a>
+                                </div>
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="password" class="text-info">Password:</label><br>
-                            <input type="password" name="password" id="password" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input
-                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>
-                            <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">
-                        </div>
-                        <div id="login-link" class="text-right">
-                            <a href="/register" class="text-info">Register here</a>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+
+
+<!--<div id="login">-->
+<!--    <h1 class="text-center text-white pt-5">e-mail microservice</h1>-->
+<!--    <div class="container">-->
+<!--        <div id="login-row" class="row justify-content-center align-items-center">-->
+<!--            <div id="login-column" class="col-md-6">-->
+<!--                <div id="login-box" class="col-md-12">-->
+<!--                    <form id="login-form" class="form" th:action="@{/login}" method="post">-->
+<!--                        <h3 class="text-center text-info">Login</h3>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="username" class="text-info">E-mail address:</label><br>-->
+<!--                            <input type="email" name="username" id="username" class="form-control" required>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="password" class="text-info">Password:</label><br>-->
+<!--                            <input type="password" name="password" id="password" class="form-control" required>-->
+<!--                        </div>-->
+<!--                        <div class="form-group">-->
+<!--                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input-->
+<!--                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>-->
+<!--                            <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">-->
+<!--                        </div>-->
+<!--                        <div id="login-link" class="text-right">-->
+<!--                            <a href="/register" class="text-info">Register here</a>-->
+<!--                        </div>-->
+<!--                    </form>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
 </body>
 </html>
