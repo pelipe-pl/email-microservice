@@ -31,16 +31,17 @@ public class UserWebController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public String login(Model model, String error, String logout, Principal principal) {
-        if (error != null) {
-            model.addAttribute("error", "Invalid credentials or inactive user!");
-        }
-        if (logout != null) {
-            model.addAttribute("message", "You have been logged out.");
-        }
+    public String login(Principal principal) {
         if (principal != null) return "redirect:/";
         else
             return "login";
+    }
+
+    @RequestMapping(value = "/login-failure", method = RequestMethod.GET)
+    public String loginFailure(Principal principal) {
+        if (principal != null) return "redirect:/";
+        else
+            return "login-failure";
     }
 
     @RequestMapping(value = "/register", method = RequestMethod.GET)

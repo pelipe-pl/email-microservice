@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
 
     <meta charset="utf-8">
@@ -17,41 +17,40 @@
 
 </head>
 <body class="bg-gradient-primary">
-<th:block th:replace="common/notification.html">Notification</th:block>
-<div class="container">
+<th:block th:replace="/common/notification">Notification</th:block>
 
-    <!-- Outer Row -->
+<div class="container">
     <div class="row justify-content-center">
         <div class="col-xl-10 col-lg-12 col-md-9">
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
-                    <!-- Nested Row within Card Body -->
                     <div class="row">
                         <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Email Microservice</h1>
                                 </div>
                                 <form id="login-form" class="user" th:action="@{/login}" method="post">
                                     <div class="form-group">
                                         <input name="username" id="username" class="form-control form-control-user"
-                                               aria-describedby="emailHelp"
-                                               placeholder="Enter Email Address...">
+                                               aria-describedby="emailHelp" type="email"
+                                               placeholder="Enter Email Address..." required>
                                     </div>
                                     <div class="form-group">
                                         <input name="password" type="password" class="form-control form-control-user"
-                                               id="exampleInputPassword" placeholder="Password">
+                                               id="exampleInputPassword" placeholder="Password" required>
                                     </div>
                                     <div class="form-group">
                                         <div class="custom-control custom-checkbox small">
-                                            <input id="remember-me" name="remember-me" type="checkbox" class="custom-control-input">
+                                            <input id="remember-me" name="remember-me" type="checkbox"
+                                                   class="custom-control-input">
                                             <label class="custom-control-label" for="remember-me">Remember Me</label>
                                         </div>
                                     </div>
 
-                                    <input type="submit" name="Login" class="btn btn-primary btn-user btn-block" value="submit">
-
+                                    <input type="submit" name="Login" class="btn btn-primary btn-user btn-block"
+                                           value="Log in">
                                 </form>
                                 <hr>
                                 <div class="text-center">
@@ -68,38 +67,5 @@
         </div>
     </div>
 </div>
-
-
-
-<!--<div id="login">-->
-<!--    <h1 class="text-center text-white pt-5">e-mail microservice</h1>-->
-<!--    <div class="container">-->
-<!--        <div id="login-row" class="row justify-content-center align-items-center">-->
-<!--            <div id="login-column" class="col-md-6">-->
-<!--                <div id="login-box" class="col-md-12">-->
-<!--                    <form id="login-form" class="form" th:action="@{/login}" method="post">-->
-<!--                        <h3 class="text-center text-info">Login</h3>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="username" class="text-info">E-mail address:</label><br>-->
-<!--                            <input type="email" name="username" id="username" class="form-control" required>-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="password" class="text-info">Password:</label><br>-->
-<!--                            <input type="password" name="password" id="password" class="form-control" required>-->
-<!--                        </div>-->
-<!--                        <div class="form-group">-->
-<!--                            <label for="remember-me" class="text-info"><span>Remember me</span> <span><input-->
-<!--                                    id="remember-me" name="remember-me" type="checkbox"></span></label><br>-->
-<!--                            <input type="submit" name="submit" class="btn btn-info btn-md" value="submit">-->
-<!--                        </div>-->
-<!--                        <div id="login-link" class="text-right">-->
-<!--                            <a href="/register" class="text-info">Register here</a>-->
-<!--                        </div>-->
-<!--                    </form>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</div>-->
 </body>
 </html>

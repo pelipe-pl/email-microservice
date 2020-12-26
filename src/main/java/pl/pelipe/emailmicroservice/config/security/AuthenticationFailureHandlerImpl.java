@@ -18,8 +18,8 @@ import static pl.pelipe.emailmicroservice.config.keys.Keys.LOG_USER_AUTHENTICATI
 @Component
 public class AuthenticationFailureHandlerImpl extends SimpleUrlAuthenticationFailureHandler implements AuthenticationFailureHandler {
 
-    private UserDetailsServiceImpl userDetailsService;
-    private Logger logger = LoggerFactory.getLogger(AuthenticationFailureHandlerImpl.class);
+    private final UserDetailsServiceImpl userDetailsService;
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationFailureHandlerImpl.class);
 
     public AuthenticationFailureHandlerImpl(UserDetailsServiceImpl userDetailsService) {
         this.userDetailsService = userDetailsService;
@@ -33,6 +33,8 @@ public class AuthenticationFailureHandlerImpl extends SimpleUrlAuthenticationFai
                 username,
                 e.getMessage(),
                 httpServletRequest.getRemoteAddr()));
+
+        setDefaultFailureUrl("/login-failure");
 
         super.onAuthenticationFailure(httpServletRequest, httpServletResponse, e);
     }
