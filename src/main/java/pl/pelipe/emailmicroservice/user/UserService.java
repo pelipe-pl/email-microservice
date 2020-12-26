@@ -16,9 +16,9 @@ import static pl.pelipe.emailmicroservice.email.EmailUtils.anonymize;
 public class UserService {
 
     private final Logger logger = LoggerFactory.getLogger(UserService.class);
-    private UserRepository userRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private RoleRepository roleRepository;
+    private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final RoleRepository roleRepository;
 
     public UserService(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, RoleRepository roleRepository) {
         this.userRepository = userRepository;
