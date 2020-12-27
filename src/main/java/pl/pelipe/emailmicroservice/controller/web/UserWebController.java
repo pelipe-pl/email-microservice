@@ -69,4 +69,10 @@ public class UserWebController {
         model.addAttribute("message", "You have been successfully registered. Your account is awaiting for activation.");
         return "login";
     }
+
+    @RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
+    public String forgotPassword(Principal principal){
+        if (principal == null) return "forgot-password";
+        else return "home";
+    }
 }
