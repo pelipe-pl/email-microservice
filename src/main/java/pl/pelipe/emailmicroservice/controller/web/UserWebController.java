@@ -71,8 +71,27 @@ public class UserWebController {
     }
 
     @RequestMapping(value = "/forgot-password", method = RequestMethod.GET)
-    public String forgotPassword(Principal principal){
-        if (principal == null) return "forgot-password";
-        else return "home";
+    public String forgotPassword(Model model, Principal principal) {
+        if (principal == null) {
+            model.addAttribute("user", new UserEntity());
+            return "forgot-password";
+        } else return "home";
+    }
+
+    @RequestMapping(value = "/forgot-password", method = RequestMethod.POST)
+    public String resetPassword(Model model, Principal principal, @ModelAttribute("user") UserEntity user) {
+        if (principal == null && user != null && !user.getUsername().isEmpty()) {
+            Boolean result = userService.sendPasswordResetToken(user.getUsername());
+            if (result) {
+                model.addAttribute("message", "Password reset email has been sent.");
+                return "login";
+            } else {
+                model.addAttribute("error", "Password reset email send has failed.");
+                return "forgot-password";
+            }
+        } else {
+            model.addAttribute("error", "Cannot reset password when logged in.");
+            return "/home";
+        }
     }
 }

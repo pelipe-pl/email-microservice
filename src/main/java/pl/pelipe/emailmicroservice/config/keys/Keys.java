@@ -40,4 +40,11 @@ public class Keys {
     public static final String USER_VALIDATION_ERROR_USERNAME_LENGTH = "Username must be %s-%s characters long.";
     public static final String USER_VALIDATION_ERROR_USERNAME_TAKEN = "User %s already exists.";
     public static final String USER_VALIDATION_ERROR_USERNAME_NOT_EMPTY = "Username cannot be empty.";
+
+    public static final String PASSWORD_RESET_EMAIL_CONTENT = "You have requested for new password. Following link is valid for 24 hours. " +
+            "To reset your password, please click: \n";
+    public static final String PASSWORD_RESET_EMAIL_SUBJECT = "Password reset request.";
+    public static final String PASSWORD_RESET_EMAIL_URL = "password.reset.url";
+    public static final String PASSWORD_RESET_EMAIL_SENDER_NAME = "password.reset.email.sender.name";
+    public static final String PASSWORD_RESET_EMAIL_SENDER_ADDRESS = "password.reset.email.sender.address";
 }
