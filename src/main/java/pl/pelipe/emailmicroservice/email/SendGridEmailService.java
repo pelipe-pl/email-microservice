@@ -7,6 +7,10 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
@@ -14,6 +18,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import static pl.pelipe.emailmicroservice.config.keys.Keys.*;
 import static pl.pelipe.emailmicroservice.email.EmailUtils.anonymize;
@@ -85,10 +91,45 @@ public class SendGridEmailService implements SendEmailService {
             logger.info(String.format(LOG_SENDGRID_RESPONSE_CODE, response.getStatusCode()));
             logger.info("SendGrid X-Message-Id: " + response.getHeaders().get("X-Message-Id"));
             logger.debug(String.format(LOG_SENDGRID_RESPONSE_HEADERS, response.getHeaders()));
+            String responseBody = response.getBody();
+            if (!responseBody.isEmpty()) parseAndLogErrors(responseBody);
+
         } catch (IOException ex) {
             logger.error(String.format(LOG_SENDGRID_FAIL, sendGridEmail.getFrom().getEmail(), sendGridEmail.getPersonalization().get(0).getTos().get(0).getEmail()), ex);
+            response.setStatusCode(500);
         }
         return response;
+    }
+
+    private void parseAndLogErrors(String responseBody) {
+
+        JSONParser jsonParser = new JSONParser();
+        Object object;
+        try {
+            object = jsonParser.parse(responseBody);
+
+            JSONObject jsonObject = (JSONObject) object;
+            JSONArray errorsArray = (JSONArray) jsonObject.get("errors");
+
+            if (!errorsArray.isEmpty()) {
+                Set<SendGridResponseError> errors = new HashSet<>();
+
+                for (Object error : errorsArray) {
+                    SendGridResponseError sendGridError = new SendGridResponseError();
+                    JSONObject json;
+                    json = (JSONObject) error;
+                    sendGridError.setMessage(json.get("message").toString());
+                    sendGridError.setField(json.get("field").toString());
+                    sendGridError.setHelp(json.get("help").toString());
+                    errors.add(sendGridError);
+                }
+                errors.forEach(sendGridResponseError ->
+                        logger.error("SendGrid responded with error on field: <" + sendGridResponseError.getField() +
+                                "> with message: <" + sendGridResponseError.getMessage() + ">"));
+            }
+        } catch (ParseException e) {
+            logger.info("Error while parsing response body: " + responseBody);
+        }
     }
 
     private void updateStatus(EmailArchiveEntity emailArchiveEntity, Response response) {

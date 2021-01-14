@@ -88,8 +88,8 @@ public class UserService {
             emailBody.setSenderName(environment.getRequiredProperty(PASSWORD_RESET_EMAIL_SENDER_NAME));
             emailBody.setFromAddress(environment.getRequiredProperty(PASSWORD_RESET_EMAIL_SENDER_ADDRESS));
             emailBody.setToAddress(userEntity.getUsername());
-
-            return emailService.send(emailBody);
+            emailService.send(emailBody);
+            return true;
         }
     }
 
