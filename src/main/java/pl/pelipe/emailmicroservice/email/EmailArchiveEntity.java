@@ -1,9 +1,10 @@
 package pl.pelipe.emailmicroservice.email;
 
 import lombok.Data;
+import pl.pelipe.emailmicroservice.token.TokenEntity;
+import pl.pelipe.emailmicroservice.user.UserEntity;
 
 import javax.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -14,6 +15,10 @@ public class EmailArchiveEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long Id;
+
+    @ManyToOne
+    @JoinColumn(name = "token_id")
+    private TokenEntity token;
 
     private String fromAddress;
 

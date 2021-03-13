@@ -7,6 +7,7 @@ import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
+import org.apache.commons.lang3.StringUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -15,6 +16,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
+import pl.pelipe.emailmicroservice.token.TokenEntity;
+import pl.pelipe.emailmicroservice.token.TokenUtils;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -30,10 +33,12 @@ public class SendGridEmailService implements SendEmailService {
     private final Environment environment;
     private final EmailArchiveService emailArchiveService;
     private final Logger logger = LoggerFactory.getLogger(SendGridEmailService.class);
+    private final TokenUtils tokenUtils;
 
-    public SendGridEmailService(Environment environment, EmailArchiveService emailArchiveService1) {
+    public SendGridEmailService(Environment environment, EmailArchiveService emailArchiveService, TokenUtils tokenUtils) {
         this.environment = environment;
-        this.emailArchiveService = emailArchiveService1;
+        this.emailArchiveService = emailArchiveService;
+        this.tokenUtils = tokenUtils;
     }
 
     public boolean send(EmailArchiveEntity emailArchiveEntity) {
@@ -42,9 +47,16 @@ public class SendGridEmailService implements SendEmailService {
         return response.getStatusCode() == 202;
     }
 
-    public boolean send(String fromAddress, String senderName, String toAddress, String subject, String content) {
+    public boolean send(String fromAddress, String senderName, String toAddress, String subject, String content, String token) {
         Mail sendGridEmail = buildSendGridMail(fromAddress, senderName, toAddress, subject, content);
-        EmailArchiveEntity emailArchiveEntity = emailArchiveService.create(sendGridEmail);
+        EmailArchiveEntity emailArchiveEntity;
+        TokenEntity tokenEntity;
+        if (StringUtils.isNotEmpty(token)) {
+            tokenEntity = tokenUtils.getTokenByTokenValue(token);
+        } else {
+            tokenEntity = tokenUtils.getSystemTokenEntity();
+        }
+        emailArchiveEntity = emailArchiveService.createWithToken(sendGridEmail, tokenEntity);
         Response response = sendRequest(buildSendGridMail(emailArchiveEntity));
         updateStatus(emailArchiveEntity, response);
         return response.getStatusCode() == 202;
@@ -64,7 +76,7 @@ public class SendGridEmailService implements SendEmailService {
                 emailArchiveService.save(emailArchiveEntity);
                 return true;
             } else {
-                sendRetry = sendRetry + 1;
+                sendRetry++;
                 emailArchiveEntity.setLastUpdate(LocalDateTime.now());
                 emailArchiveEntity.setProviderResponse(responseCode);
                 emailArchiveEntity.setSendRetry(sendRetry);

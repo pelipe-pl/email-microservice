@@ -24,20 +24,21 @@ public class EmailService {
         @NotNull String token = payload.getTokenValue();
 
         if (!tokenValidator.validate(token)) return TOKEN_ERROR;
-        boolean result = send(emailBody);
+        boolean result = send(emailBody, token);
 
         if (result) return OK;
         else return FAILED;
     }
 
-    public boolean send(EmailBody emailBody) {
+    public boolean send(EmailBody emailBody, String token) {
 
         return sendGridEmailService.send(
                 emailBody.getFromAddress(),
                 emailBody.getSenderName(),
                 emailBody.getToAddress(),
                 emailBody.getSubject(),
-                emailBody.getContent());
+                emailBody.getContent(),
+                token);
     }
 
     public boolean resend(EmailArchiveEntity emailArchiveEntity) {
